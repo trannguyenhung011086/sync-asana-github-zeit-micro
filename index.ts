@@ -17,7 +17,7 @@ const app = micro(async (req: IncomingMessage, res: ServerResponse) => {
     }
 
     const data = await json(req);
-    console.log("Request payload: \n" + data);
+    console.log(data);
     const processed = await processor(data);
 
     if (!processed) {
