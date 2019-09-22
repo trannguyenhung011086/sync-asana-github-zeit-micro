@@ -6,6 +6,7 @@ const client = asana.Client.create().useAccessToken(asanaToken);
 const getAsanaTask = async (asanaId: string) => {
     const task = await client.tasks.findById(parseInt(asanaId));
     if (!task) throw Error("Failed to find Asana task with id: " + asanaId);
+    console.log(task);
     return task;
 };
 
@@ -23,6 +24,7 @@ const addComment = async (asanaId: string, githubData: any) => {
             throw Error(
                 "Failed to add comment to Asana task with id: " + asanaId
             );
+        console.log(story);
         return story;
     } catch (e) {
         throw e;

@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
 import micro, { json, send } from "micro";
-const log = require("debug-level");
 
 import { processor } from "./lib/processor";
 
@@ -18,7 +17,6 @@ const app = micro(async (req: IncomingMessage, res: ServerResponse) => {
     }
 
     const data = await json(req);
-    log.debug(data);
     const processed = await processor(data);
 
     if (!processed) {
