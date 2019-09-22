@@ -16,12 +16,17 @@ const addComment = async (asanaId: string, githubData: any) => {
         \nState: ${githubData.state}
         \nBy: ${githubData.user.login}`
     };
+    try {
+        const story = await client.tasks.addComment(parseInt(asanaId), comment);
 
-    const story = await client.tasks.addComment(parseInt(asanaId), comment);
-
-    if (!story)
-        throw Error("Failed to add comment to Asana task with id: " + asanaId);
-    return story;
+        if (!story)
+            throw Error(
+                "Failed to add comment to Asana task with id: " + asanaId
+            );
+        return story;
+    } catch (e) {
+        throw e;
+    }
 };
 
 export { getAsanaTask, addComment };

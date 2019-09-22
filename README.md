@@ -12,6 +12,6 @@
 
 ## Create webhook on github
 
--   set payload url to `https://<url from zeit>/index.ts`
+-   set payload url to `https://<url from zeit>`
 -   set content type to `application/json`
 -   set events to `Let me select individual events` and check `Pull Requests`
