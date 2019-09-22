@@ -20,7 +20,7 @@ const app = micro(async (req: IncomingMessage, res: ServerResponse) => {
     const data = await json(req);
     console.log("data: " + data);
 
-    await processor(data);
+    // await processor(data);
 
     send(res, 200, "Updated Asana task successfully");
 });
