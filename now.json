@@ -3,8 +3,7 @@
     "name": "zeit-asana-github-sync",
     "builds": [{ "src": "index.ts", "use": "@now/node" }],
     "env": {
-        "IS_NOW": "true",
-        "ASANA_ACCESS_TOKEN": "@ASANA_ACCESS_TOKEN"
+        "IS_NOW": "true"
     },
     "alias": "zeit-asana-github-sync"
 }
