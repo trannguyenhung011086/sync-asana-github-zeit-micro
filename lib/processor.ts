@@ -8,7 +8,7 @@ const processor = async (data: any) => {
 
     // find asana task
     const asanaTask = await getAsanaTask(asanaId);
-    console.log("Found asana task: " + asanaTask.name);
+    console.log("Found asana task data: " + asanaTask);
 
     // add comment to asana task
     const githubData = {
