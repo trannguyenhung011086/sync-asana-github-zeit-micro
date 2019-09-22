@@ -13,7 +13,11 @@ const processor = async (data: any) => {
     // add comment to asana task
     const githubData = {
         title: data["pull_request"]["title"],
-        issue_url: data["pull_request"]["issue_url"]
+        url: data["pull_request"]["url"],
+        state: data["pull_request"]["state"],
+        user: {
+            login: data["pull_request"]["user"]["login"]
+        }
     };
     const story = await addComment(asanaId, githubData);
     console.log("Added comment to asana task: " + story.name);

@@ -10,7 +10,13 @@ const getAsanaTask = async (asanaId: string) => {
 };
 
 const addComment = async (asanaId: string, githubData: any) => {
-    const comment: any = `Pull Request: ${githubData.title}\nLink: ${githubData.issue_url}`;
+    const comment: asana.resources.Tasks.CommentParams = {
+        text: `Pull Request: ${githubData.title}
+        \nUrl: ${githubData.url}
+        \nState: ${githubData.state}
+        \nBy: ${githubData.user.login}`
+    };
+
     const story = await client.tasks.addComment(parseInt(asanaId), comment);
 
     if (!story)
