@@ -16,13 +16,11 @@ const app = micro(async (req: IncomingMessage, res: ServerResponse) => {
         return;
     }
 
+    console.log("request: " + req);
     const data = await json(req);
-    const processed = await processor(data);
+    console.log("data: " + data);
 
-    if (!processed) {
-        send(res, 403, "Failed to update Asana task!");
-        return;
-    }
+    await processor(data);
 
     send(res, 200, "Updated Asana task successfully");
 });

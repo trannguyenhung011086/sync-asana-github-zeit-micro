@@ -22,12 +22,12 @@ const processor = async (data: any) => {
     };
     console.log(githubData);
 
-    const story = await addComment(asanaId, githubData);
-    console.log("Added comment to asana task: " + story.name);
+    // const story = await addComment(asanaId, githubData);
+    // console.log("Added comment to asana task: " + story.name);
 
-    // update status for asana task
+    // // update status for asana task
 
-    return story;
+    // return story;
 };
 
 export { processor };
