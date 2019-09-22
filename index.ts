@@ -16,11 +16,8 @@ const app = micro(async (req: IncomingMessage, res: ServerResponse) => {
         return;
     }
 
-    console.log("request: " + req);
     const data = await json(req);
-    console.log("data: " + data);
-
-    // await processor(data);
+    await processor(data);
 
     send(res, 200, "Updated Asana task successfully");
 });

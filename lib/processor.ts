@@ -10,7 +10,6 @@ const processor = async (data: any) => {
     const asanaTask = await getAsanaTask(asanaId);
     console.log("Found asana task: " + asanaTask.name);
 
-    console.log("\n=========", data["pull_request"]);
     // add comment to asana task
     const githubData = {
         title: data["pull_request"]["title"],
@@ -20,14 +19,14 @@ const processor = async (data: any) => {
             login: data["pull_request"]["user"]["login"]
         }
     };
-    console.log(githubData);
+    console.log("data: " + githubData);
 
-    // const story = await addComment(asanaId, githubData);
-    // console.log("Added comment to asana task: " + story.name);
+    const story = await addComment(asanaId, githubData);
+    console.log("Added comment to asana task: " + story.name);
 
-    // // update status for asana task
+    // update status for asana task
 
-    // return story;
+    return story;
 };
 
 export { processor };
