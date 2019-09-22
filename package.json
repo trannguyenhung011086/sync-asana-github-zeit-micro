@@ -1,0 +1,28 @@
+{
+    "name": "sync-asana-github-zeit-micro",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "micro"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro/issues"
+    },
+    "homepage": "https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro#readme",
+    "dependencies": {
+        "@types/asana": "^0.14.36",
+        "@types/micro": "^7.3.3",
+        "asana": "^0.17.3",
+        "micro": "^9.3.4",
+        "ts-node": "^8.4.1",
+        "typescript": "^3.6.3"
+    }
+}
