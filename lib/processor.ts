@@ -1,14 +1,15 @@
 import { getAsanaId } from "./github";
 import { getAsanaTask, addComment } from "./asana";
+const log = require("debug-level");
 
 const processor = async (data: any) => {
     // get asana task ID from pull request
     const asanaId = getAsanaId(data);
-    console.log("Found asana id: " + asanaId);
+    log.info("Found asana id: " + asanaId);
 
     // find asana task
     const asanaTask = await getAsanaTask(asanaId);
-    console.log("Found asana task: " + asanaTask.name);
+    log.info("Found asana task: " + asanaTask.name);
 
     // add comment to asana task
     const githubData = {
@@ -19,10 +20,10 @@ const processor = async (data: any) => {
             login: data["pull_request"]["user"]["login"]
         }
     };
-    console.log(githubData);
+    log.info(githubData);
 
     const story = await addComment(asanaId, githubData);
-    console.log("Added comment to asana task: " + story.name);
+    log.info("Added comment to asana task: " + story.name);
 
     // update status for asana task
 
