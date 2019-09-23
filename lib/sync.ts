@@ -33,6 +33,10 @@ const sync = async (data: any) => {
     await addComment(asanaId, githubData);
     console.log("Added comment to asana task: " + asanaTask.name);
 
+    // get project
+    const project = getAsanaProject(asanaTask);
+    console.log(project.name);
+
     // update section for asana task when pull request is merged
     if (!githubData.merged) {
         console.log(
