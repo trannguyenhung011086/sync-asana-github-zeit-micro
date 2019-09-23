@@ -6,11 +6,11 @@ const getAsanaId = (data: any) => {
 };
 
 function match(toMatch: string) {
-    const exp = /^#([0-9]{0,16})\s+.*/;
+    const exp = /^#([0-9]{0,16})\s.+/;
     const match = exp.exec(toMatch);
+    console.log("Match: " + match);
 
     if (!match) throw Error("No Asana task ID found!");
-
     return match[1];
 }
 
