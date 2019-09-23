@@ -12,19 +12,18 @@ const getAsanaTask = async (asanaId: string) => {
 const addComment = async (asanaId: string, githubData: any) => {
     const comment: asana.resources.Tasks.CommentParams = {
         text: `Pull Request: ${githubData.title}
-                By: ${githubData.user.login}
-                Url: ${githubData.url}
-                Merge from: ${githubData.head}
-                Merge to: ${githubData.base}
-                State: ${githubData.state}
-                Merged: ${githubData.merged}`
+            By: ${githubData.user.login}
+            Url: ${githubData.url}
+            Merge from: ${githubData.head}
+            Merge to: ${githubData.base}
+            State: ${githubData.state}
+            Merged: ${githubData.merged}`
     };
 
     const story = await client.tasks.addComment(parseInt(asanaId), comment);
 
     if (!story)
         throw Error("Failed to add comment to Asana task with id: " + asanaId);
-    return story;
 };
 
 const addAsanaTask = async ({

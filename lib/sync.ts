@@ -30,13 +30,13 @@ const sync = async (data: any) => {
         merged: data["pull_request"]["merged"]
     };
 
-    const story = await addComment(asanaId, githubData);
-    console.log("Added comment to asana task: " + story.name);
+    await addComment(asanaId, githubData);
+    console.log("Added comment to asana task: " + asanaTask.name);
 
     // update section for asana task when pull request is merged
     if (!githubData.merged) {
         console.log(
-            "Pull request is not merged. No need to update section for Asana task: " +
+            "Pull request is not merged. No update section for Asana task: " +
                 asanaTask.name
         );
     }
