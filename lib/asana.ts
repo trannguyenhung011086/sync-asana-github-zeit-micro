@@ -62,6 +62,7 @@ const getAsanaProject = (asanaTask: asana.resources.Tasks.Type) => {
 };
 
 const getAsanaSections = async (projectId: number) => {
+    console.log(await client.projects.sections);
     const sections = await client.projects.sections(projectId);
     if (sections.data.length == 0) {
         throw Error(
