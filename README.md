@@ -15,3 +15,7 @@
 -   set payload url to `https://<url from zeit>`
 -   set content type to `application/json`
 -   set events to `Let me select individual events` and check `Pull Requests`
+
+## Create pull request on github
+
+-   use convention `#<Asana task ID> <pull request text>` in title or description
