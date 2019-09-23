@@ -64,7 +64,7 @@ const getAsanaProject = (asanaTask: asana.resources.Tasks.Type) => {
 const getAsanaSections = async (projectId: number) => {
     console.log(client.sections);
     const sections = await client.sections.findByProject(projectId);
-    if (sections.data.length == 0) {
+    if (sections.length === 0) {
         throw Error(
             "Failed to get sections for Asana project with id: " + projectId
         );
