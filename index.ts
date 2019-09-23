@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 import micro, { json, send } from "micro";
 
-import { processor } from "./lib/processor";
+import { sync } from "./lib/sync";
 
 const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
 
@@ -17,7 +17,7 @@ const app = micro(async (req: IncomingMessage, res: ServerResponse) => {
     }
 
     const data = await json(req);
-    await processor(data);
+    await sync(data);
 
     send(res, 200, "Updated Asana task successfully");
 });

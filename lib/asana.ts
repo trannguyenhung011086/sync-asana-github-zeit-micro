@@ -12,21 +12,92 @@ const getAsanaTask = async (asanaId: string) => {
 const addComment = async (asanaId: string, githubData: any) => {
     const comment: asana.resources.Tasks.CommentParams = {
         text: `Pull Request: ${githubData.title}
-        \nUrl: ${githubData.url}
-        \nState: ${githubData.state}
-        \nBy: ${githubData.user.login}`
+                By: ${githubData.user.login}
+                Url: ${githubData.url}
+                Merge from: ${githubData.head}
+                Merge to: ${githubData.base}
+                State: ${githubData.state}
+                Merged: ${githubData.merged}`
     };
-    try {
-        const story = await client.tasks.addComment(parseInt(asanaId), comment);
 
-        if (!story)
-            throw Error(
-                "Failed to add comment to Asana task with id: " + asanaId
-            );
-        return story;
-    } catch (e) {
-        throw e;
+    const story = await client.tasks.addComment(parseInt(asanaId), comment);
+
+    if (!story)
+        throw Error("Failed to add comment to Asana task with id: " + asanaId);
+    return story;
+};
+
+const addAsanaTask = async ({
+    asanaId,
+    projectId,
+    sectionId
+}: {
+    asanaId: string;
+    projectId: number;
+    sectionId: number;
+}) => {
+    const data: asana.resources.Tasks.AddProjectParams = {
+        project: projectId,
+        section: sectionId
+    };
+    const result = await client.tasks.addProject(parseInt(asanaId), data);
+
+    if (Object.keys(result).length != 0) {
+        throw Error("Failed to change Asana task's section!");
     }
 };
 
-export { getAsanaTask, addComment };
+const getAsanaProject = (asanaTask: asana.resources.Tasks.Type) => {
+    let asanaProject;
+    for (const project of asanaTask.projects) {
+        if (project.name.toLowerCase().includes("sprint")) {
+            asanaProject = project;
+            break;
+        }
+    }
+    if (!asanaProject)
+        throw Error(
+            "Failed to get project for Asana task with id: " + asanaTask.id
+        );
+    return asanaProject;
+};
+
+const getAsanaSections = async (projectId: number) => {
+    const sections = await client.projects.sections(projectId);
+    if (sections.data.length == 0) {
+        throw Error(
+            "Failed to get sections for Asana project with id: " + projectId
+        );
+    }
+    return sections.data;
+};
+
+const getAsanaSectionId = (
+    asanaSections: asana.resources.Tasks.Type[],
+    githubData: any
+): number => {
+    let section;
+    if (githubData.base === "develop") section = "On Test";
+    if (githubData.base === "staging") section = "On Staging";
+    if (githubData.base === "master") section = "Done";
+
+    let sectionId;
+    for (let item of asanaSections) {
+        if (item.name === section) {
+            sectionId = item.id;
+            break;
+        }
+    }
+    if (!sectionId)
+        throw Error("Failed to get section id for section: " + section);
+    return sectionId;
+};
+
+export {
+    getAsanaTask,
+    addComment,
+    addAsanaTask,
+    getAsanaProject,
+    getAsanaSections,
+    getAsanaSectionId
+};
