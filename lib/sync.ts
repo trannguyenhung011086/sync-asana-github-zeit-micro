@@ -42,6 +42,7 @@ const sync = async (data: any) => {
     }
     if (githubData.merged) {
         const project = getAsanaProject(asanaTask);
+        console.log("=====", project.id, project.name);
         const sections = await getAsanaSections(project.id);
         const sectionId = getAsanaSectionId(sections, githubData);
         await addAsanaTask({ asanaId, projectId: project.id, sectionId });
