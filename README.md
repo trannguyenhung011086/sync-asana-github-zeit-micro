@@ -1,11 +1,17 @@
 # sync-asana-github-zeit-micro
 
-**Goal**
-Sync github pull request status to asana task
-Flow (see method `getAsanaSectionId` at `./lib/github.js` for section mapping):
+**Goal:** Sync github pull request status to asana task
 
--   pull request created - > add comment to asana -> move task to "in review" section
--   pull request merged - > add comment to asana - > move task to "on env" section
+-   Flow (see method `getAsanaSectionId` at `./lib/github.js` for section mapping):
+
+    -   pull request created - > add comment to asana -> move task to "in review" section
+    -   pull request merged - > add comment to asana - > move task to "on env" section
+
+**Stack**
+
+-   use Zeit Now platform for deployment (https://zeit.co)
+-   use Zeit Micro for server (https://github.com/zeit/micro)
+-   use Asana library (https://github.com/Asana/node-asana)
 
 ## Get Asana personal token
 

@@ -25,15 +25,4 @@ async function test() {
     // console.log(`Added comment to asana task: ${task.name}`);
 }
 
-// test();
-
-function match(toMatch) {
-    const exp = /#([0-9]{0,16}).+/;
-    const match = exp.exec(toMatch);
-    console.log(match[1]);
-
-    if (!match) throw Error("No Asana task ID found!");
-    return match[0];
-}
-
-match("ref #1140905340811780merge staging");
+test();
