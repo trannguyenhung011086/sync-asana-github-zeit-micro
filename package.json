@@ -18,11 +18,7 @@
     },
     "homepage": "https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro#readme",
     "dependencies": {
-        "@types/asana": "^0.14.36",
-        "@types/micro": "^7.3.3",
         "asana": "^0.17.3",
-        "micro": "^9.3.4",
-        "ts-node": "^8.4.1",
-        "typescript": "^3.6.3"
+        "micro": "^9.3.4"
     }
 }
