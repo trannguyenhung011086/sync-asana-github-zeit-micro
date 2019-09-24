@@ -1,17 +1,39 @@
-const asana = require("asana");
+const {
+    getAsanaTask,
+    addComment,
+    addAsanaTask,
+    getAsanaProject,
+    getAsanaSections
+} = require("./lib/asana.js");
 
-const asanaToken = process.env.ASANA_ACCESS_TOKEN;
-const client = asana.Client.create().useAccessToken(asanaToken);
+const asanaId = "1140905340811780";
 
-const getAsanaSections = async projectId => {
-    const sections = await client.sections.findByProject(projectId);
-    console.log(sections);
-    if (sections.length == 0) {
-        throw Error(
-            "Failed to get sections for Asana project with id: " + projectId
-        );
-    }
-    return sections.data;
-};
+async function test() {
+    // get asana task info
+    const task = await getAsanaTask(asanaId);
+    console.log(`Found asana task: ${task.name}`);
 
-getAsanaSections(1139944293671018);
+    const project = getAsanaProject(task);
+    console.log(`Found asana project: ${project.name}`);
+    console.log(project);
+
+    const sections = await getAsanaSections(project.gid);
+    console.log(`Found asana sections: ${JSON.stringify(sections)}`);
+
+    // add comment to asana task
+    // await addComment(asanaId, githubData);
+    // console.log(`Added comment to asana task: ${task.name}`);
+}
+
+// test();
+
+function match(toMatch) {
+    const exp = /#([0-9]{0,16}).+/;
+    const match = exp.exec(toMatch);
+    console.log(match[1]);
+
+    if (!match) throw Error("No Asana task ID found!");
+    return match[0];
+}
+
+match("ref #1140905340811780merge staging");

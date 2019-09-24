@@ -1,11 +1,12 @@
-import { IncomingMessage, ServerResponse } from "http";
-import micro, { json, send } from "micro";
+const micro = require("micro");
+const json = micro.json;
+const send = micro.send;
 
 import { sync } from "./lib/sync";
 
 const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
 
-const app = micro(async (req: IncomingMessage, res: ServerResponse) => {
+const app = micro(async (req, res) => {
     if (!asanaAccessToken) {
         send(res, 403, "No ASANA_ACCESS_TOKEN found!");
         return;
@@ -26,4 +27,4 @@ if (!process.env.IS_NOW) {
     app.listen(process.env.PORT || 3000);
 }
 
-export default app;
+module.exports = app;
