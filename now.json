@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "zeit-asana-github-sync",
-    "builds": [{ "src": "index.ts", "use": "@now/node" }],
+    "builds": [{ "src": "index.js", "use": "@now/node" }],
     "env": {
         "IS_NOW": "true"
     }
