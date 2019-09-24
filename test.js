@@ -1,43 +1,28 @@
-const asana = require("asana");
+const {
+    getAsanaTask,
+    addComment,
+    addAsanaTask,
+    getAsanaProject,
+    getAsanaSections
+} = require("./lib/asana.js");
 
-const asanaToken = process.env.ASANA_ACCESS_TOKEN;
-const client = asana.Client.create({
-    defaultHeaders: { "asana-enable": "string_ids,new_sections" }
-}).useAccessToken(asanaToken);
+const asanaId = "1140905340811780";
 
-const getAsanaSections = async projectId => {
-    let sections = await client.sections.findByProject(projectId);
-    if (sections.length == 0) {
-        throw Error(
-            "Failed to get sections for Asana project with id: " + projectId
-        );
-    }
-    sections = sections.reduce((res, item) => {
-        res[item.name] = item.gid;
-        return res;
-    }, {});
-    console.log(sections);
-    return sections;
-};
+async function test() {
+    // get asana task info
+    const task = await getAsanaTask(asanaId);
+    console.log(`Found asana task: ${task.name}`);
 
-const addAsanaTask = async ({ asanaId, projectId, sectionId }) => {
-    const data = {
-        project: projectId,
-        section: sectionId
-    };
-    const result = await client.tasks.addProject(asanaId, data);
+    const project = getAsanaProject(task);
+    console.log(`Found asana project: ${project.name}`);
+    console.log(project);
 
-    if (Object.keys(result).length != 0) {
-        throw Error("Failed to change Asana task's section!");
-    }
+    const sections = await getAsanaSections(project.gid);
+    console.log(`Found asana sections: ${JSON.stringify(sections)}`);
 
-    console.log(result);
-};
+    // add comment to asana task
+    // await addComment(asanaId, githubData);
+    // console.log(`Added comment to asana task: ${task.name}`);
+}
 
-getAsanaSections("1139944293671018");
-
-// addAsanaTask({
-//     asanaId: "1140905340811780",
-//     projectId: "1139944293671018",
-//     sectionId: "1139944293671019"
-// });
+test();
