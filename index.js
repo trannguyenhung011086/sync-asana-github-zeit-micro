@@ -23,14 +23,10 @@ const app = micro(async (req, res) => {
         return;
     }
 
-    try {
-        const data = await json(req);
-        await sync(data);
+    const data = await json(req);
+    await sync(data);
 
-        send(res, 200, "Updated Asana task(s) successfully");
-    } catch (e) {
-        send(res, 500, e);
-    }
+    send(res, 200, "Updated Asana task(s) successfully");
 });
 
 if (!process.env.IS_NOW) {
