@@ -5,6 +5,7 @@ const send = micro.send;
 import { sync } from "./lib/sync";
 
 const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
+const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
 
 const app = micro(async (req, res) => {
     if (!asanaAccessToken) {
@@ -12,15 +13,24 @@ const app = micro(async (req, res) => {
         return;
     }
 
-    if (req.headers["x-github-event"] != "pull_request") {
-        send(res, 403, "Only trigger for github events of pull request!");
+    if (!githubToken) {
+        send(res, 403, "No GITHUB_TRIGGER_TOKEN found!");
         return;
     }
 
-    const data = await json(req);
-    await sync(data);
+    if (req.headers["x-github-event"] != "pull_request") {
+        send(res, 403, "Only allow github events of pull request!");
+        return;
+    }
 
-    send(res, 200, "Updated Asana task successfully");
+    try {
+        const data = await json(req);
+        await sync(data);
+
+        send(res, 200, "Updated Asana task(s) successfully");
+    } catch (e) {
+        send(res, 500, e);
+    }
 });
 
 if (!process.env.IS_NOW) {
