@@ -5,10 +5,16 @@ const send = micro.send;
 import { sync } from "./lib/sync";
 
 const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
+const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
 
 const app = micro(async (req, res) => {
     if (!asanaAccessToken) {
         send(res, 403, "No ASANA_ACCESS_TOKEN found!");
+        return;
+    }
+
+    if (!githubToken) {
+        send(res, 403, "No GITHUB_TRIGGER_TOKEN found!");
         return;
     }
 
