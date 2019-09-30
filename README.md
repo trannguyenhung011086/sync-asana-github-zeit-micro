@@ -21,7 +21,8 @@
 
 -   install now: `npm i -g now`
 -   run `now login` to login with Zeit credentials
--   run `now secrets add asana_token <ASANA_ACCESS_TOKEN>` to add secrets
+-   run `now secrets add asana_token <ASANA_ACCESS_TOKEN>` to add Asana secrets
+-   run `now secrets add github_token <GITHUB_TRIGGER_TOKEN>` to add Github secrets
 -   run `now` to deploy (note url to add to github webhook)
 
 ## Create webhook on github

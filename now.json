@@ -4,6 +4,7 @@
     "builds": [{ "src": "index.js", "use": "@now/node" }],
     "env": {
         "IS_NOW": "true",
-        "ASANA_ACCESS_TOKEN": "@asana_token"
+        "ASANA_ACCESS_TOKEN": "@asana_token",
+        "GITHUB_TRIGGER_TOKEN": "@github_token"
     }
 }
