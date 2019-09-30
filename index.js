@@ -19,7 +19,7 @@ const app = micro(async (req, res) => {
     }
 
     if (req.headers["x-github-event"] != "pull_request") {
-        send(res, 403, "Only trigger for github events of pull request!");
+        send(res, 403, "Only allow github events of pull request!");
         return;
     }
 
