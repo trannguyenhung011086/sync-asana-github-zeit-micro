@@ -7,6 +7,12 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "micro"
     },
+    "prettier": {
+        "trailingComma": "all",
+        "tabWidth": 4,
+        "semi": true,
+        "singleQuote": false
+    },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro.git"
@@ -19,7 +25,9 @@
     "homepage": "https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro#readme",
     "dependencies": {
         "asana": "^0.17.3",
+        "eslint": "^6.5.1",
         "micro": "^9.3.4",
-        "node-fetch": "^2.6.0"
+        "node-fetch": "^2.6.0",
+        "slack": "^11.0.2"
     }
 }

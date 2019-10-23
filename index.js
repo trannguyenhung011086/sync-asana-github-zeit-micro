@@ -2,7 +2,7 @@ const micro = require("micro");
 const json = micro.json;
 const send = micro.send;
 
-import { sync } from "./lib/sync";
+const { syncGithubToAsana } = require("./lib/sync");
 
 const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
 const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
@@ -25,7 +25,7 @@ const app = micro(async (req, res) => {
 
     try {
         const data = await json(req);
-        await sync(data);
+        await syncGithubToAsana(data);
 
         send(res, 200, "Updated Asana task(s) successfully");
     } catch (e) {
