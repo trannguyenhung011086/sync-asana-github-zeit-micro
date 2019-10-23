@@ -5,6 +5,7 @@
     "env": {
         "IS_NOW": "true",
         "ASANA_ACCESS_TOKEN": "@asana_token",
-        "GITHUB_TRIGGER_TOKEN": "@github_token"
+        "GITHUB_TRIGGER_TOKEN": "@github_token",
+        "SLACK_BOT_TOKEN": "@slack_token"
     }
 }
