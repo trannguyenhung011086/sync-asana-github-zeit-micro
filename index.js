@@ -1,25 +1,25 @@
-const micro = require("micro");
+const micro = require('micro');
 const json = micro.json;
 const send = micro.send;
 
-const { syncGithubToAsana } = require("./lib/sync");
+const { syncGithubToAsana } = require('./lib/sync');
 
 const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
 const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
 
 const app = micro(async (req, res) => {
     if (!asanaAccessToken) {
-        send(res, 403, "No ASANA_ACCESS_TOKEN found!");
+        send(res, 403, 'No ASANA_ACCESS_TOKEN found!');
         return;
     }
 
     if (!githubToken) {
-        send(res, 403, "No GITHUB_TRIGGER_TOKEN found!");
+        send(res, 403, 'No GITHUB_TRIGGER_TOKEN found!');
         return;
     }
 
-    if (req.headers["x-github-event"] != "pull_request") {
-        send(res, 403, "Only allow github events of pull request!");
+    if (req.headers['x-github-event'] != 'pull_request') {
+        send(res, 403, 'Only allow github events of pull request!');
         return;
     }
 
@@ -27,7 +27,7 @@ const app = micro(async (req, res) => {
         const data = await json(req);
         await syncGithubToAsana(data);
 
-        send(res, 200, "Updated Asana task(s) successfully");
+        send(res, 200, 'Updated Asana task(s) successfully');
     } catch (e) {
         send(res, 500, e);
     }
