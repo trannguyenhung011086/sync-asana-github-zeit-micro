@@ -1,6 +1,7 @@
 const micro = require('micro');
 const json = micro.json;
 const send = micro.send;
+const sendError = micro.sendError;
 
 const { syncGithubToAsana } = require('./lib/sync');
 
@@ -24,15 +25,13 @@ const app = micro(async (req, res) => {
     }
 
     try {
-        console.log(`req: ${req}`);
         const data = await json(req);
-        console.log(`data: ${data}`)
         await syncGithubToAsana(data);
 
-        send(res, 200, 'Updated Asana task(s) successfully');
-        console.log(`response: ${res}`)
+        send(res, 200, 'Completed.');
     } catch (e) {
-        send(res, 500, e);
+        console.log(`App error: ${e}`);
+        sendError(req, res, e);
     }
 });
 

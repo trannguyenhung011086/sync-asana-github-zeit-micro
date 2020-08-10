@@ -1,4 +1,4 @@
 asana: 1/1159643686189895:d75396097a7f1225c290d936ff855fc3
-github: 0cfc22af6776047b6a739533225f796ace224f63
-webhook: https://vercel.com/kriskomar/asana-github-sync/b88t5vuq5
+github: 2db7be74fff0ec440726c6b7ee758876bd3f5016
+webhook: https://asana-github-sync.vercel.app/
 vercel: Ebjak9S22JvTEKxHMc2rn2NV
