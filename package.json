@@ -1,5 +1,5 @@
 {
-    "name": "sync-asana-github-zeit-micro",
+    "name": "asana-github-sync",
     "version": "1.0.0",
     "description": "",
     "main": "index.ts",
