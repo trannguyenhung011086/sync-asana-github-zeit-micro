@@ -1,10 +1,11 @@
 {
     "version": 2,
-    "name": "zeit-asana-github-sync",
-    "builds": [{ "src": "index.js", "use": "@now/node" }],
+    "name": "asana-github-sync",
+    "builds": [{ "src": "index.js", "use": "@vercel/node" }],
     "env": {
         "IS_NOW": "true",
         "ASANA_ACCESS_TOKEN": "@asana_token",
-        "GITHUB_TRIGGER_TOKEN": "@github_token"
+        "GITHUB_TRIGGER_TOKEN": "@github_token",
+        "ENV": "dev"
     }
 }

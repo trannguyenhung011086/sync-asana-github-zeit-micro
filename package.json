@@ -1,12 +1,14 @@
 {
     "name": "asana-github-sync",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "micro"
+        "start": "babel-node index.js",
+        "dev": "nodemon --exec babel-node index.js"
     },
+    "type": "module",
     "prettier": {
         "trailingComma": "all",
         "tabWidth": 4,
@@ -25,9 +27,24 @@
     "homepage": "https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro#readme",
     "dependencies": {
         "asana": "^0.18.4",
-        "eslint": "^7.4.0",
-        "micro": "^9.3.4",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "eslint": "^7.6.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "express": "^4.17.1",
         "node-fetch": "^2.6.0",
-        "slack": "^11.0.2"
+        "nodemon": "^2.0.4"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.3",
+        "babel-node": "^0.0.1-security",
+        "babel-polyfill": "^6.26.0",
+        "babel-preset-es2020": "^1.0.2",
+        "babel-register": "^6.26.0"
     }
 }

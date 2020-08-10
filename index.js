@@ -1,42 +1,41 @@
-const micro = require('micro');
-const json = micro.json;
-const send = micro.send;
-const sendError = micro.sendError;
+import syncGithubToAsana from './lib/sync.js';
+import express from 'express';
 
-const { syncGithubToAsana } = require('./lib/sync');
+const asanaAccessToken = process.env.ENV === 'prod' ? process.env.ASANA_ACCESS_TOKEN : '1/1159643686189895:d75396097a7f1225c290d936ff855fc3';
+const githubToken = process.env.ENV === 'prod' ? process.env.GITHUB_TRIGGER_TOKEN : '2db7be74fff0ec440726c6b7ee758876bd3f5016';
+const app = express();
 
-const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
-const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
-
-const app = micro(async (req, res) => {
+app.get('/', async (req, res) => {
     if (!asanaAccessToken) {
-        send(res, 403, 'No ASANA_ACCESS_TOKEN found!');
+        res.status(403).send('No ASANA_ACCESS_TOKEN found!');
         return;
     }
 
     if (!githubToken) {
-        send(res, 403, 'No GITHUB_TRIGGER_TOKEN found!');
+        res.status(403).send('No GITHUB_TRIGGER_TOKEN found!');
         return;
     }
 
     if (req.headers['x-github-event'] != 'pull_request') {
-        send(res, 403, 'Only allow github events of pull request!');
+        res.status(403).send('Only allow github events of pull request!');
         return;
     }
 
     try {
-        const data = await json(req);
+        const data = await JSON.stringify(req);
         await syncGithubToAsana(data);
 
-        send(res, 200, 'Completed.');
+        res.status(200).send(res);
     } catch (e) {
         console.log(`App error: ${e}`);
-        sendError(req, res, e);
+        res.status(500).send(req, res, e);
     }
 });
 
 if (!process.env.IS_NOW) {
-    app.listen(process.env.PORT || 3000);
+    app.listen(process.env.PORT || 3000, () => {
+        console.log(`app is listening to port ${process.env.PORT || 3000}`);
+    });
 }
 
-module.exports = app;
+export default app;
