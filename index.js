@@ -24,10 +24,13 @@ const app = micro(async (req, res) => {
     }
 
     try {
+        console.log(`req: ${req}`);
         const data = await json(req);
+        console.log(`data: ${data}`)
         await syncGithubToAsana(data);
 
         send(res, 200, 'Updated Asana task(s) successfully');
+        console.log(`response: ${res}`)
     } catch (e) {
         send(res, 500, e);
     }
