@@ -8,7 +8,6 @@
         "start": "babel-node index.js",
         "dev": "nodemon --exec babel-node index.js"
     },
-    "type": "module",
     "prettier": {
         "trailingComma": "all",
         "tabWidth": 4,
