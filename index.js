@@ -1,8 +1,8 @@
 import syncGithubToAsana from './lib/sync.js';
 import express from 'express';
 
-const asanaAccessToken = process.env.ENV === 'prod' ? process.env.ASANA_ACCESS_TOKEN : '1/1159643686189895:d75396097a7f1225c290d936ff855fc3';
-const githubToken = process.env.ENV === 'prod' ? process.env.GITHUB_TRIGGER_TOKEN : '2db7be74fff0ec440726c6b7ee758876bd3f5016';
+const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
+const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
 const app = express();
 
 app.get('/', async (req, res) => {
