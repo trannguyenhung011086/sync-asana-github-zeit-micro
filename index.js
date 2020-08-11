@@ -33,14 +33,12 @@ app.post('/', async (req, res) => {
     }
 
     try {
-        // const data = await json(req);
-        console.log(`req.body = ${req.body}`)
         await syncGithubToAsana(req.body);
 
-        res.status(200).send(res);
+        res.status(200).send('Completed!');
     } catch (e) {
         console.log(`App error: ${e}`);
-        res.status(500).send(req, res, e);
+        res.status(500).send(e);
     }
 });
 
