@@ -5,7 +5,11 @@ const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
 const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
 const app = express();
 
-app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({
+        strict: false,
+        type: "application/json"
+    }));
 
 app.get('/', (req, res) => {
     res.status(403).send('Use POST!!');
@@ -29,6 +33,8 @@ app.post('/', async (req, res) => {
     }
 
     try {
+        // const data = await json(req);
+        console.log(`req.body = ${req.body}`)
         await syncGithubToAsana(req.body);
 
         res.status(200).send(res);
