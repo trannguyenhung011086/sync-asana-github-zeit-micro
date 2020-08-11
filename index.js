@@ -7,7 +7,7 @@ const app = express();
 
 app.use(express.json())
 
-app.get('/', async (req, res) => {
+app.get('/', (req, res) => {
     res.status(403).send('Use POST!!');
     return;
 });
@@ -29,8 +29,7 @@ app.post('/', async (req, res) => {
     }
 
     try {
-        const data = JSON.parse(req);
-        await syncGithubToAsana(data);
+        await syncGithubToAsana(req.body);
 
         res.status(200).send(res);
     } catch (e) {
