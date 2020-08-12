@@ -14,16 +14,8 @@
         "semi": true,
         "singleQuote": true
     },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro.git"
-    },
     "author": "",
     "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro/issues"
-    },
-    "homepage": "https://github.com/trannguyenhung011086/sync-asana-github-zeit-micro#readme",
     "dependencies": {
         "asana": "^0.18.4",
         "cors": "^2.8.5",
