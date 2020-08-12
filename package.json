@@ -5,8 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "babel-node index.js",
-        "dev": "nodemon --exec babel-node index.js"
+        "start": "babel-node index.js"
     },
     "prettier": {
         "trailingComma": "all",
@@ -26,8 +25,7 @@
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.1",
         "express": "^4.17.1",
-        "node-fetch": "^2.6.0",
-        "nodemon": "^2.0.4"
+        "node-fetch": "^2.6.0"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",
