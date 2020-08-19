@@ -33,8 +33,6 @@ Resources:
             ApiId: !Ref HttpApi
             Path: /asana-github-sync
             Method: ANY
-            # Auth:
-            #   Authorizer: NONE
       Environment:
         Variables:
           API_ACCESS_TOKEN: >-
@@ -50,8 +48,7 @@ Resources:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: Prod
-      # Auth:
-      #   Authorizer: NONE
+      CorsConfiguration: True
 Outputs:
   ServerlessApi:
     Description: API Gateway endpoint URL for Prod stage for function
