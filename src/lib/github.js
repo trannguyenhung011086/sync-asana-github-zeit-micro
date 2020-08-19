@@ -18,14 +18,10 @@ function match(toMatch) {
 
 async function getCommits(data) {
     const commits_url = data['pull_request']['commits_url'];
-    
-    console.log(`getCommits(): url = ${commits_url}`);
-
     const res = await fetch(commits_url, options);
 
     if(!res.ok) {
-        console.log(`fetching ${commits_url} returned code ${res.status}`)
-        return null;
+        throw `fetching ${commits_url} returned code ${res.status}`;
     }
 
     return await res.json();
@@ -45,16 +41,14 @@ async function getReviewComments(data) {
 
 export async function getPullRequestData(data) {
     if(!data) {
-        console.log(`getPullRequestData(): data parameter was null.`);
-        return null;
+        throw `getPullRequestData(): data parameter was null.`;
     }
 
     let commit_urls = [];
     const commits = await getCommits(data);
 
     if (!commits || commits.length === 0) {
-        console.log(`getPullRequestData(): No Github data was found! The branch was probably deleted.`);
-        return null;
+        throw `getPullRequestData(): No Github data was found! The branch was probably deleted.`;
     }
 
     for (const commit of commits) {

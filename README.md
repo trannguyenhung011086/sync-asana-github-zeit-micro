@@ -2,15 +2,13 @@
 
 **Goal:** Sync github pull request status to asana task
 
--   Flow (see method `getAsanaSectionId` at `./lib/github.js` for section mapping):
+-   Flow (see method `getAsanaSectionId` at `.src/lib/github.js` for section mapping, note: ticket moving will be added later):
 
     -   pull request created - > add comment to asana -> move task to "in review" section
     -   pull request merged - > add comment to asana - > move task to "on env" section (movement part is disabled for now)
 
 **Stack**
 
--   use Vercel CLI platform for deployment (Stack moving forward will be AWS)
--   use Express as MW
 -   use Asana library (https://github.com/Asana/node-asana)
 -   Git calls are made using fetch
 
@@ -32,12 +30,26 @@
 
 ## Deploy
 
--   install vercel (used to be now): `yarn global add now vercel`
--   run `vercel login` to login with Zeit credentials
--   run `vercel secrets add asana_token <ASANA_ACCESS_TOKEN>` to add Asana secrets
--   run `vercel secrets add github_token <GITHUB_TRIGGER_TOKEN>` to add Github secrets
--   run `vercel --prod` to deploy (note url to add to github webhook)
--   run `vercel dev` to develop
+The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
+
+## Deploy the application
+
+The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+
+To use the SAM CLI, you need the following tools.
+
+* SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+* Node.js - [Install Node.js 10](https://nodejs.org/en/), including the NPM package management tool.
+* Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+
+To build and deploy your application for the first time, run the following in your shell:
+
+```bash
+sam build
+sam deploy --guided
+```
+
+If you redeploy this and it ends up at a different endpoint URL, you need to go in to Git and change it in the Webhook.
 
 ## Create pull request on github
 

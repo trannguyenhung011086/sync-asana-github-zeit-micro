@@ -1,10 +1,6 @@
-import Asana from 'asana';
-const { Client } = Asana;
-
 const asanaToken = process.env.ASANA_ACCESS_TOKEN;
-const client = Client.create({
-    defaultHeaders: { 'asana-enable': 'string_ids,new_sections' },
-}).useAccessToken(asanaToken);
+const asana = require('asana');
+const client = asana.Client.create({ defaultHeaders: { 'asana-enable': 'string_ids,new_sections' },}).useAccessToken(asanaToken);
 
 export async function getAsanaTask(asanaId) {
     const task = await client.tasks.findById(asanaId);

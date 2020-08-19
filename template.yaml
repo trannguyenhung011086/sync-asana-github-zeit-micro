@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  asana-github-sync
+  
+Globals:
+  Function:
+    Timeout: 60
+
+Resources:
+  ServerlessFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs12.x
+      CodeUri: .
+      Description: 'Asana Github Syncer!'
+      MemorySize: 512
+      Timeout: 60
+      Role: >-
+        arn:aws:iam::098294454856:role/service-role/asana-github-sync-role-pecg5uyg
+      Events:
+        Api1:
+          Type: Api
+          Properties:
+            Path: /asana-github-sync
+            Method: ANY
+      Environment:
+        Variables:
+          API_ACCESS_TOKEN: '{{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncApiAccessToken}}'
+          ASANA_ACCESS_TOKEN: '{{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncAsanaAccessToken}}'
+          GITHUB_TRIGGER_TOKEN: '{{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncGithubTriggerToken}}'
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  ServerlessApi:
+    Description: "API Gateway endpoint URL for Prod stage for function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/asana-github-sync/"
+  ServerlessFunction:
+    Description: "Lambda Function ARN"
+    Value: !GetAtt ServerlessFunction.Arn
+  ServerlessFunctionIamRole:
+    Description: "Implicit IAM Role created for function"
+    Value: !GetAtt ServerlessFunctionRole.Arn
