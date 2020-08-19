@@ -64,3 +64,4 @@ typings/
 .vercel
 
 dist/
+.aws-sam/
