@@ -50,6 +50,7 @@ sam deploy
 ```
 
 If you redeploy this, you need to go in to Github and change the endpoint URL in the Webhook.
+https://github.com/KrazyCouponLady/web/settings/hooks/239601246
 
 ## Create pull request on github
 

@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: "asana-github-sync"
 Globals:
   Function:
-    Timeout: 29
+    Timeout: 60
 Resources:
   ServerlessFunctionRole:
     Type: "AWS::IAM::Role"
@@ -24,7 +24,7 @@ Resources:
       CodeUri: .
       Description: Asana Github Syncer!
       MemorySize: 512
-      Timeout: 29
+      Timeout: 60
       Role: !GetAtt ServerlessFunctionRole.Arn
       Events:
         HttpApiEvent:
@@ -33,6 +33,7 @@ Resources:
             ApiId: !Ref HttpApi
             Path: /asana-github-sync
             Method: ANY
+            TimeoutInMillis: 29000
       Environment:
         Variables:
           API_ACCESS_TOKEN: >-
