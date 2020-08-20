@@ -19,7 +19,7 @@ Resources:
   ServerlessFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Handler: index.handler
+      Handler: src/index.handler
       Runtime: nodejs12.x
       CodeUri: .
       Description: Asana Github Syncer!
@@ -44,6 +44,7 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: ad74e09c-bf63-453f-9fa9-7c3a9c3ead15
+      BuildMethod: makefile
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:

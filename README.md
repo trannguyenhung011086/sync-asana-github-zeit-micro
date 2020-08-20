@@ -42,14 +42,14 @@ To use the SAM CLI, you need the following tools.
 * Node.js - [Install Node.js 10](https://nodejs.org/en/), including the NPM package management tool.
 * Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
-To build and deploy your application, run the following in your shell:
+To build and deploy the application, run the following in your shell:
 
 ```bash
 sam build
 sam deploy
 ```
 
-If you redeploy this and it ends up at a different endpoint URL, you need to go in to Github and change it in the Webhook.
+If you redeploy this, you need to go in to Github and change the endpoint URL in the Webhook.
 
 ## Create pull request on github
 
