@@ -2,7 +2,7 @@ const asanaToken = process.env.ASANA_ACCESS_TOKEN;
 const asana = require('asana');
 const client = asana.Client.create({ defaultHeaders: { 'asana-enable': 'string_ids,new_sections' },}).useAccessToken(asanaToken);
 
-export async function getAsanaTask(asanaId) {
+const getAsanaTask = async (asanaId) => {
     const task = await client.tasks.findById(asanaId);
     if (!task) {
         throw Error('Failed to find Asana task with id: ' + asanaId);
@@ -10,7 +10,9 @@ export async function getAsanaTask(asanaId) {
     return task;
 }
 
-export async function addComment(asanaId, githubData) {
+exports.getAsanaTask = getAsanaTask;
+
+exports.addComment = async (asanaId, githubData) => {
     // Only post comment once merged
     if(githubData?.merged === false) {
         return;
@@ -30,7 +32,7 @@ export async function addComment(asanaId, githubData) {
     }
 }
 
-export async function addAsanaTask({ asanaId, projectId, sectionId }) {
+exports.addAsanaTask = async ({ asanaId, projectId, sectionId }) => {
     const data = {
         project: projectId,
         section: sectionId,
@@ -42,7 +44,7 @@ export async function addAsanaTask({ asanaId, projectId, sectionId }) {
     }
 }
 
-export function getAsanaProject(asanaTask) {
+exports.getAsanaProject = (asanaTask) => {
     let asanaProject;
     for (const project of asanaTask.projects) {
         console.log(`Project with name '${project.name}' has this data: ${JSON.stringify(project)}`)
@@ -58,7 +60,7 @@ export function getAsanaProject(asanaTask) {
     return asanaProject;
 }
 
-export async function getAsanaSections(projectId) {
+exports.getAsanaSections = async (projectId) => {
     let sections = await client.sections.findByProject(projectId);
     if (sections.length === 0) {
         throw Error(
@@ -70,4 +72,28 @@ export async function getAsanaSections(projectId) {
         return res;
     }, {});
     return sections;
+}
+
+exports.updateTaskStatusToQAReady = async (taskId) => {
+    // Set to QA Ready
+    //TODO: Way too static!!
+
+    const task = await getAsanaTask(taskId);
+    const newFieldData = task.custom_fields;
+
+    for (var i = 0; i < newFieldData.length; i++) {
+        if(newFieldData[i].gid === '1164289210145661') {
+            newFieldData[i].enum_value.gid = '1182837669988980';
+            newFieldData[i].enum_value.color = 'aqua';
+            newFieldData[i].enum_value.enabled = true;
+            newFieldData[i].enum_value.name = 'QA Ready';
+        }
+    }
+
+    const newData = { 
+        ...task,
+        custom_fields: newFieldData
+    };
+    console.log('fuckin new data: ' + JSON.stringify(newData));
+    await client.tasks.updateTask(taskId, newData);
 }

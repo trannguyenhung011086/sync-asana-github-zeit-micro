@@ -45,7 +45,7 @@ Resources:
     Metadata:
       'AWS::CloudFormation::Designer':
         id: ad74e09c-bf63-453f-9fa9-7c3a9c3ead15
-      BuildMethod: makefile
+      # BuildMethod: makefile
   HttpApi:
     Type: AWS::Serverless::HttpApi
     Properties:

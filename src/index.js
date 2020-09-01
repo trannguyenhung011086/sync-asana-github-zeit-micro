@@ -1,5 +1,7 @@
-import syncGithubToAsana from './lib/sync.js';
-import crypto from 'crypto';
+// import syncGithubToAsana from './lib/sync.js';
+// import crypto from 'crypto';
+const { syncGithubToAsana } = require('./lib/sync.js');
+const crypto = require('crypto');
 
 const asanaAccessToken = process.env.ASANA_ACCESS_TOKEN;
 const githubToken = process.env.GITHUB_TRIGGER_TOKEN;
@@ -68,7 +70,6 @@ exports.handler = async (event) => {
             body: JSON.stringify('Completed!'),
         };
     } catch (e) {
-        console.log(`Error: ${e}`);
         return {
             statusCode: 500,
             body: JSON.stringify(`Error occurred: ${e}`),

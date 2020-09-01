@@ -1,4 +1,5 @@
-import fetch from 'node-fetch';
+// import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
 const options = {
     method: 'GET',
@@ -39,7 +40,7 @@ async function getReviewComments(data) {
     return await res.json();
 }
 
-export async function getPullRequestData(data) {
+exports.getPullRequestData = async (data) => {
     if(!data) {
         throw `getPullRequestData(): data parameter was null.`;
     }
@@ -71,7 +72,7 @@ export async function getPullRequestData(data) {
     };
 }
 
-export async function getAsanaIds(data) {
+exports.getAsanaIds = async (data) => {
     let ids = [];
 
     // check title, body, head
@@ -104,26 +105,21 @@ export async function getAsanaIds(data) {
     return uniqueIds;
 }
 
-export function getAsanaSectionId(asanaSections, data) {
+exports.getAsanaSectionId = (asanaSections, data) => {
     let section;
 
-    if (data.merged === false && data.state === 'open') {
-        if (data.base === 'release')
-            section = 'in review';
-        if (data.base === 'master')
-            section = 'production ready';
+    if (data.merged === true && data.state == 'closed') {
+            section = 'QA Ready';
     }
 
-    if (data.merged === true && data.state == 'closed') {
-        if (data.base === 'release')
-            section = 'on staging';
-        if (data.base === 'master')
-            section = 'this release';
-    }
+    let rtnData = {};
 
     for (const item of Object.keys(asanaSections)) {
-        if (item.toLowerCase().includes(section)) {
-            return asanaSections[item];
+        if (item.includes(section)) {
+            rtnData.sectionId = asanaSections[item];
+            rtnData.sectionName = section;
         }
     }
+
+    return rtnData;
 }
