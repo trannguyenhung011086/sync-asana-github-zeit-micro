@@ -46,9 +46,9 @@ exports.syncGithubToAsana = async (data) => {
                     const section = getAsanaSectionId(sections, githubData);
 
                     if(section?.sectionId) {
-                        // if(currentSection === section.sectionName) { // Section not changed.
-                        //     return;
-                        // }
+                        if(currentSection === section.sectionName) { // Section not changed.
+                            return;
+                        }
 
                         console.log(`Found section to move: ${section.sectionName}: ${section.sectionId}`);
 
