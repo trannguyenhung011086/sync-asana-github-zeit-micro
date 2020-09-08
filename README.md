@@ -30,7 +30,7 @@
 
 ## Deploy
 
-The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
+The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code.
 
 ## Deploy the application
 
@@ -39,8 +39,6 @@ The Serverless Application Model Command Line Interface (SAM CLI) is an extensio
 To use the SAM CLI, you need the following tools.
 
 * SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* Node.js - [Install Node.js 10](https://nodejs.org/en/), including the NPM package management tool.
-* Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
 To build and deploy the application, run the following in your shell:
 
@@ -52,6 +50,8 @@ sam deploy
 If you redeploy this, you -might- need to go in to Github and change the endpoint URL in the Webhook.
 However, Cloudformation tries to keep the endpoint url the same if it can. 
 https://github.com/KrazyCouponLady/web/settings/hooks/239601246
+
+This application has a custom build pipeline because it it babel-ed down to CJS (so it can use condition property access). The build pipeline is in 'makefile' and the template contains a line that tells SAM to use that file when building. 
 
 ## Create pull request on github
 
