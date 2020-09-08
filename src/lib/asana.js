@@ -12,18 +12,45 @@ const getAsanaTask = async (asanaId) => {
 
 exports.getAsanaTask = getAsanaTask;
 
-exports.addComment = async (asanaId, githubData) => {
-    // Only post comment once merged
-    if(githubData?.merged === false) {
-        return;
-    }
+exports.addComment = async (asanaId, githubData, movedFromSection, movingToSection) => {
+    let comment = '';
 
-    const comment = {
-        text: `Pull Request ${githubData.url} from ${githubData.user.login}
-                Title: ${githubData.title} - Body: ${githubData.body}
-                From: ${githubData.head} - To: ${githubData.base} - State: ${githubData.state} - Merged: ${githubData.merged}
-                Commits: ${githubData.commits}`,
-    };
+    switch(movingToSection) {
+        case 'In Progress':
+            if(movedFromSection !== 'In Progress') {
+                comment = {
+                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} CREATED.
+                            URL: ${githubData.url}
+                            Ticket moved to 'In Progress'.
+                            Branch '${githubData.head}' will be merging to '${githubData.base}'`
+                };
+            } else {
+                comment = {
+                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} CREATED.
+                            URL: ${githubData.url}
+                            Branch '${githubData.head}' will be merging to '${githubData.base}'`
+                };
+            }
+        break;
+        case 'QA Ready':
+            comment = {
+                text: `Pull request titled '${githubData.title}' from ${githubData.user.login} MERGED.
+                        URL: ${githubData.url}
+                        Body: ${githubData.body}
+                        Ticket moved to 'QA Ready'.
+                        Branch '${githubData.head}' is merged to '${githubData.base}'.
+                        PR is now ${githubData.state}.
+                        Commits: ${githubData.commits}`
+            };
+        break;
+        case 'Deployable':
+            comment = {
+                text: `Pull request titled '${githubData.title}' from ${githubData.user.login} DEPLOYABLE.
+                        URL: ${githubData.url}
+                        Ticket moved to 'Deployable'.`
+            };
+        break;
+    }
 
     const story = await client.tasks.addComment(asanaId, comment);
 
@@ -74,26 +101,24 @@ exports.getAsanaSections = async (projectId) => {
     return sections;
 }
 
-exports.updateTaskStatusToQAReady = async (taskId) => {
-    // Set to QA Ready
-    //TODO: Way too static!!
-
-    const task = await getAsanaTask(taskId);
-    const newFieldData = task.custom_fields;
-
-    for (var i = 0; i < newFieldData.length; i++) {
-        if(newFieldData[i].gid === '1164289210145661') {
-            newFieldData[i].enum_value.gid = '1182837669988980';
-            newFieldData[i].enum_value.color = 'aqua';
-            newFieldData[i].enum_value.enabled = true;
-            newFieldData[i].enum_value.name = 'QA Ready';
-        }
+const setTicketStatus = async (taskId, statusGid) => {
+    var newData = { 
+        'custom_fields': {
+            '1164289210145661': statusGid
     }
+};
 
-    const newData = { 
-        ...task,
-        custom_fields: newFieldData
-    };
-    console.log('fuckin new data: ' + JSON.stringify(newData));
-    await client.tasks.updateTask(taskId, newData);
+await client.tasks.updateTask(taskId, newData);
+}
+
+exports.updateTaskStatusToInProgress = async (taskId) => {
+    await setTicketStatus(taskId, '1164289210145663');
+}
+
+exports.updateTaskStatusToQAReady = async (taskId) => {
+    await setTicketStatus(taskId, '1182837669988980');
+}
+
+exports.updateTaskStatusToDeployable = async (taskId) => {
+    await setTicketStatus(taskId, '1164289210145667');
 }

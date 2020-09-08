@@ -1,8 +1,5 @@
 const http = require('http');
 const { syncGithubToAsana } = require('./lib/sync.js');
-// const asanaToken = process.env.ASANA_ACCESS_TOKEN;
-// const asana = require('asana');
-// const client = asana.Client.create({ defaultHeaders: { 'asana-enable': 'string_ids,new_sections' },}).useAccessToken(asanaToken);
 
 // client.dispatcher.debug(true);
 

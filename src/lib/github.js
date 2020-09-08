@@ -1,4 +1,3 @@
-// import fetch from 'node-fetch';
 const fetch = require('node-fetch');
 
 const options = {
@@ -11,7 +10,10 @@ const options = {
 };
 
 function match(toMatch) {
-    let result = toMatch.match(/#(ref)?([0-9]{16})|([0-9]{16})/g);
+    console.log('potential regex match: ' + toMatch);
+    let result = toMatch.match(/(\d{16})(?!.*\d{16})/g);
+    console.log('result of match op: ' + result);
+
     return result
         ? result.map(item => item.replace('#', '').replace('ref', ''))
         : '';
@@ -68,7 +70,7 @@ exports.getPullRequestData = async (data) => {
         head: data['pull_request']['head']['ref'],
         base: data['pull_request']['base']['ref'],
         merged: data['pull_request']['merged'],
-        commits: commit_urls,
+        commits: commit_urls
     };
 }
 
@@ -91,8 +93,8 @@ exports.getAsanaIds = async (data) => {
     }
 
     // check comments and review comments
-    const comments = (await getComments(data)).concat(
-        await getReviewComments(data));
+    const comments = (await getComments(data)).concat(await getReviewComments(data));
+
     for (const comment of comments) {
         const matchComment = await match(comment['body']);
         ids = [...ids, ...matchComment];
@@ -108,8 +110,13 @@ exports.getAsanaIds = async (data) => {
 exports.getAsanaSectionId = (asanaSections, data) => {
     let section;
 
+    if (data.merged === false && data.state === 'open') {
+        section = 'In Progress';
+    }
+
     if (data.merged === true && data.state == 'closed') {
-            section = 'QA Ready';
+        if (data.base === 'develop') section = 'QA Ready';
+        if (data.base === 'master') section = 'Deployable';
     }
 
     let rtnData = {};

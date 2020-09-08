@@ -1,9 +1,6 @@
-// import { getPullRequestData, getAsanaIds, getAsanaSectionId } from './github.js';
-// import { getAsanaTask, addComment, addAsanaTask, getAsanaProject, getAsanaSections } from './asana.js';
-// import { getPullRequestData, getAsanaIds } from './github.js';
-// import { getAsanaTask, addComment } from './asana.js';
 const { getPullRequestData, getAsanaIds, getAsanaSectionId } = require('./github.js');
-const { getAsanaTask, addComment, addAsanaTask, getAsanaProject, getAsanaSections, updateTaskStatusToQAReady } = require('./asana.js');
+const { getAsanaTask, addComment, addAsanaTask, getAsanaProject, 
+    getAsanaSections, updateTaskStatusToInProgress, updateTaskStatusToQAReady, updateTaskStatusToDeployable } = require('./asana.js');
 
 exports.syncGithubToAsana = async (data) => {
     try {
@@ -35,45 +32,59 @@ exports.syncGithubToAsana = async (data) => {
                     `Found asana sections: ${JSON.stringify(sections)}`,
                 );
 
-                // add comment to asana task
-                await addComment(asanaId, githubData);
-                console.log(`Added comment to asana task: ${task.name}`);
-
                 // get current section
                 const currentSection = task.memberships
-                    .filter(
-                        membership => membership.project.name === project.name,
-                    )
-                    .map(item => item.section.name)[0];
+                .filter(
+                    membership => membership.project.name === project.name,
+                )
+                .map(item => item.section.name)[0];
 
                 console.log(`Current section of asana task: ${currentSection}`);
 
-                // move task if not in done section
-                if (currentSection !== 'Done') {
-                    // get section Id to move to
+                if (currentSection !== 'Done' || currentSection !== 'Closed') {
+                    // get section to move to
                     const section = getAsanaSectionId(sections, githubData);
 
                     if(section?.sectionId) {
+                        // if(currentSection === section.sectionName) { // Section not changed.
+                        //     return;
+                        // }
+
                         console.log(`Found section to move: ${section.sectionName}: ${section.sectionId}`);
 
-                        // update task to correct custom field status
-                        await updateTaskStatusToQAReady(asanaId);
+                        await addComment(asanaId, githubData, currentSection, section.sectionName);
+                        console.log(`Added comment to asana task: ${task.name}`);
 
-                        // update asana task to correct section
+                        // update task to correct custom field status for "Status"
+                        switch(section.sectionName) {
+                            case 'In Progress':
+                                await updateTaskStatusToInProgress(asanaId);
+                            break;
+                            case 'QA Ready':
+                                await updateTaskStatusToQAReady(asanaId);
+                            break;
+                            case 'Deployable':
+                                await updateTaskStatusToDeployable(asanaId);
+                            break;
+                        }
+                        
+                        // update task to correct section (column)
                         await addAsanaTask({
                             asanaId,
                             projectId: project.gid,
                             sectionId: section.sectionId
                         });
                     } else {
-                        console.log('Valid section not found in project.')
+                        console.log('Valid section not found in project.');
                     }
+                } else {
+                    console.log('Ticket is Done or Closed. Doing nothing.');
                 }
 
                 console.log(`Updated asana task: ${task.name}`);
             } catch (e) {
                 console.log(`Couldn't update Asana task: ${e}`);
-                continue;
+                throw e;
             }
         }
     } catch (e) {

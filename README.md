@@ -49,7 +49,8 @@ sam build
 sam deploy
 ```
 
-If you redeploy this, you need to go in to Github and change the endpoint URL in the Webhook.
+If you redeploy this, you -might- need to go in to Github and change the endpoint URL in the Webhook.
+However, Cloudformation tries to keep the endpoint url the same if it can. 
 https://github.com/KrazyCouponLady/web/settings/hooks/239601246
 
 ## Create pull request on github

@@ -16,6 +16,8 @@ Resources:
             Action: "sts:AssumeRole"
       Path: "/service-role/"
       MaxSessionDuration: 3600
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
   ServerlessFunction:
     Type: 'AWS::Serverless::Function'
     Properties:

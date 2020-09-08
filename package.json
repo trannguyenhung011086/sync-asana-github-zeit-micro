@@ -2,12 +2,11 @@
     "name": "asana-github-sync",
     "version": "3.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "src/index.js",
     "scripts": {
         "build": "babel ./src --out-dir dist",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node ./src/index.js",
-        "dev": "ASANA_ACCESS_TOKEN='1/1159643686189895:d75396097a7f1225c290d936ff855fc3' GITHUB_TRIGGER_TOKEN='df4e20c39217f62a1a5a5901c9ffba8f148d532b' API_ACCESS_TOKEN='DKNqRPeLtTJLrobxsmV' node ./src/dev.js"
+        "dev": "ASANA_ACCESS_TOKEN='' GITHUB_TRIGGER_TOKEN='' API_ACCESS_TOKEN='' node ./src/dev.js",
+        "start": "node ./src/index.js"
     },
     "prettier": {
         "trailingComma": "all",
