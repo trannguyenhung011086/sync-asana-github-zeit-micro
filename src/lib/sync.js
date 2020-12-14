@@ -1,6 +1,6 @@
 const { getPullRequestData, getAsanaIds, getAsanaSectionId } = require('./github.js');
 const { getAsanaTask, addComment, addAsanaTask, getAsanaProject, 
-    getAsanaSections, updateTaskStatusToInProgress, updateTaskStatusToQAReady, updateTaskStatusToDeployable } = require('./asana.js');
+    getAsanaSections, updateTaskStatusToInProgress, updateTaskStatusToReadyForReview, updateTaskStatusToQAReady, updateTaskStatusToDeployable } = require('./asana.js');
 
 exports.syncGithubToAsana = async (data) => {
     try {
@@ -59,13 +59,16 @@ exports.syncGithubToAsana = async (data) => {
                         switch(section.sectionName) {
                             case 'In Progress':
                                 await updateTaskStatusToInProgress(asanaId);
-                            break;
+                                break;
+                            case 'Ready for Review':
+                                await updateTaskStatusToReadyForReview(asanaId);
+                                break;
                             case 'QA Ready':
                                 await updateTaskStatusToQAReady(asanaId);
-                            break;
+                                break;
                             case 'Deployable':
                                 await updateTaskStatusToDeployable(asanaId);
-                            break;
+                                break;
                         }
                         
                         // update task to correct section (column)

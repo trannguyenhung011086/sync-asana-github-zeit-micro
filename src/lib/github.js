@@ -110,8 +110,21 @@ exports.getAsanaIds = async (data) => {
 exports.getAsanaSectionId = (asanaSections, data) => {
     let section;
 
-    if (data.merged === false && data.state === 'open') {
+    if (
+        data.merged === false &&
+        data.state === 'open' &&
+        (data.draft || data.title.match(/wip/i))
+    ) {
         section = 'In Progress';
+    }
+
+    if (
+        data.merged === false &&
+        data.state === 'open' &&
+        !data?.draft &&
+        !data.title.match(/wip/i)
+    ) {
+        section = 'Ready for Review';
     }
 
     if (data.merged === true && data.state == 'closed') {

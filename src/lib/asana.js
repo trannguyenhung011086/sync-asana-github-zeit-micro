@@ -31,7 +31,23 @@ exports.addComment = async (asanaId, githubData, movedFromSection, movingToSecti
                             Branch '${githubData.head}' will be merging to '${githubData.base}'`
                 };
             }
-        break;
+            break;
+        case 'Ready for Review':
+            if(movedFromSection !== 'In Progress') {
+                comment = {
+                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} CREATED.
+                            URL: ${githubData.url}
+                            Ticket moved to 'Ready For Review'.
+                            Branch '${githubData.head}' will be merging to '${githubData.base}'`
+                };
+            } else {
+                comment = {
+                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} OUT OF DRAFT.
+                            URL: ${githubData.url}
+                            Branch '${githubData.head}' will be merging to '${githubData.base}'`
+                };
+            }
+            break;
         case 'QA Ready':
             comment = {
                 text: `Pull request titled '${githubData.title}' from ${githubData.user.login} MERGED.
@@ -42,14 +58,14 @@ exports.addComment = async (asanaId, githubData, movedFromSection, movingToSecti
                         PR is now ${githubData.state}.
                         Commits: ${githubData.commits}`
             };
-        break;
+            break;
         case 'Deployable':
             comment = {
                 text: `Pull request titled '${githubData.title}' from ${githubData.user.login} DEPLOYABLE.
                         URL: ${githubData.url}
                         Ticket moved to 'Deployable'.`
             };
-        break;
+            break;
     }
 
     const story = await client.tasks.addComment(asanaId, comment);
@@ -113,6 +129,10 @@ await client.tasks.updateTask(taskId, newData);
 
 exports.updateTaskStatusToInProgress = async (taskId) => {
     await setTicketStatus(taskId, '1164289210145663');
+}
+
+exports.updateTaskStatusToReadyForReview = async (taskId) => {
+    await setTicketStatus(taskId, '1164315670581599');
 }
 
 exports.updateTaskStatusToQAReady = async (taskId) => {
