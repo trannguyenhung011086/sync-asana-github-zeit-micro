@@ -55,7 +55,7 @@ exports.getPullRequestData = async (data) => {
     }
 
     for (const commit of commits) {
-        const item = ` ${commit['html_url']} - ${commit['commit']['message']} - ${commit['committer']['login']}`;
+        const item = ` ${commit['html_url']} - ${commit['commit']['message']}${commit?.committer?.login ? ` - ${commit.committer.login}` : ''}`;
         commit_urls.push(item);
     }
 

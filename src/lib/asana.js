@@ -15,18 +15,20 @@ exports.getAsanaTask = getAsanaTask;
 exports.addComment = async (asanaId, githubData, movedFromSection, movingToSection) => {
     let comment = '';
 
+    const userString = githubData?.user?.login ? ` from ${githubData.user.login}` : ''
+
     switch(movingToSection) {
         case 'In Progress':
             if(movedFromSection !== 'In Progress') {
                 comment = {
-                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} CREATED.
+                    text: `Pull request titled '${githubData.title}'${userString} CREATED.
                             URL: ${githubData.url}
                             Ticket moved to 'In Progress'.
                             Branch '${githubData.head}' will be merging to '${githubData.base}'`
                 };
             } else {
                 comment = {
-                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} CREATED.
+                    text: `Pull request titled '${githubData.title}' ${userString} CREATED.
                             URL: ${githubData.url}
                             Branch '${githubData.head}' will be merging to '${githubData.base}'`
                 };
@@ -35,14 +37,14 @@ exports.addComment = async (asanaId, githubData, movedFromSection, movingToSecti
         case 'Ready for Review':
             if(movedFromSection !== 'In Progress') {
                 comment = {
-                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} CREATED.
+                    text: `Pull request titled '${githubData.title}'${userString} CREATED.
                             URL: ${githubData.url}
                             Ticket moved to 'Ready For Review'.
                             Branch '${githubData.head}' will be merging to '${githubData.base}'`
                 };
             } else {
                 comment = {
-                    text: `Pull request titled '${githubData.title}' from ${githubData.user.login} OUT OF DRAFT.
+                    text: `Pull request titled '${githubData.title}'${userString} OUT OF DRAFT.
                             URL: ${githubData.url}
                             Branch '${githubData.head}' will be merging to '${githubData.base}'`
                 };
@@ -50,7 +52,7 @@ exports.addComment = async (asanaId, githubData, movedFromSection, movingToSecti
             break;
         case 'QA Ready':
             comment = {
-                text: `Pull request titled '${githubData.title}' from ${githubData.user.login} MERGED.
+                text: `Pull request titled '${githubData.title}'${userString} MERGED.
                         URL: ${githubData.url}
                         Body: ${githubData.body}
                         Ticket moved to 'QA Ready'.
@@ -61,7 +63,7 @@ exports.addComment = async (asanaId, githubData, movedFromSection, movingToSecti
             break;
         case 'Deployable':
             comment = {
-                text: `Pull request titled '${githubData.title}' from ${githubData.user.login} DEPLOYABLE.
+                text: `Pull request titled '${githubData.title}'${userString} DEPLOYABLE.
                         URL: ${githubData.url}
                         Ticket moved to 'Deployable'.`
             };
