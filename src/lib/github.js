@@ -70,6 +70,7 @@ exports.getPullRequestData = async (data) => {
         head: data['pull_request']['head']['ref'],
         base: data['pull_request']['base']['ref'],
         merged: data['pull_request']['merged'],
+        draft: data['pull_request']['draft'],
         commits: commit_urls
     };
 }
