@@ -1,0 +1,3 @@
+class CommentAction extends Action {
+    
+}

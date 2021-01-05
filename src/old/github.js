@@ -75,6 +75,36 @@ exports.getPullRequestData = async (data) => {
     };
 }
 
+export const getAsanaTaskIds = (pullRequest) => {
+    let ids = [];
+
+    const checks = [pullRequest.title, pullRequest.body, pullRequest.head];
+    checks.forEach(item => (ids = [...ids, ...match(item)]));
+
+    // check commits
+    const commits = await getCommits(data);
+
+    for (const commit of commits) {
+        const matchCommit = await match(commit['commit']['message']);
+        ids = [...ids, ...matchCommit];
+    }
+
+    // check comments and review comments
+    const comments = (await getComments(data)).concat(await getReviewComments(data));
+
+    for (const comment of comments) {
+        const matchComment = await match(comment['body']);
+        ids = [...ids, ...matchComment];
+    }
+
+    if (ids.length === 0) {
+        throw Error('No Asana task ID found!');
+    }
+
+    const uniqueIds = [...new Set(ids)];
+    return uniqueIds;
+}
+
 exports.getAsanaIds = async (data) => {
     let ids = [];
 

@@ -1,5 +1,5 @@
 const http = require('http');
-const { syncGithubToAsana } = require('./lib/sync.js');
+const { syncGithubToAsana } = require('./sync.js');
 
 // client.dispatcher.debug(true);
 

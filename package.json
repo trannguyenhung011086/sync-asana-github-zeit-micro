@@ -4,9 +4,10 @@
     "description": "",
     "main": "src/index.js",
     "scripts": {
-        "build": "babel ./src --out-dir dist",
-        "dev": "ASANA_ACCESS_TOKEN='' GITHUB_TRIGGER_TOKEN='' API_ACCESS_TOKEN='' node ./src/dev.js",
-        "start": "node ./src/index.js"
+        "build": "webpack-cli",
+        "watch": "webpack-cli -w",
+        "start": "sam local invoke ServerlessFunction",
+        "debug": "yarn start -d 5858"
     },
     "prettier": {
         "trailingComma": "all",
@@ -29,14 +30,20 @@
         "node-fetch": "^2.6.0"
     },
     "devDependencies": {
-        "@babel/cli": "^7.0.0",
-        "@babel/core": "^7.0.0",
+        "@babel/cli": "^7.12.10",
+        "@babel/core": "^7.12.10",
         "@babel/node": "^7.0.0",
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
         "@babel/plugin-proposal-optional-chaining": "^7.11.0",
-        "@babel/plugin-transform-runtime": "^7.11.0",
+        "@babel/plugin-transform-runtime": "^7.12.10",
         "@babel/polyfill": "^7.0.0",
-        "@babel/preset-env": "^7.11.0",
+        "@babel/preset-env": "^7.12.11",
+        "@babel/preset-typescript": "^7.12.7",
         "@babel/register": "^7.0.0",
-        "babel-eslint": "^10.1.0"
+        "aws-sam-webpack-plugin": "^0.8.1",
+        "babel-eslint": "^10.1.0",
+        "babel-loader": "^8.2.2",
+        "webpack": "^5.11.1",
+        "webpack-cli": "^4.3.1"
     }
 }
