@@ -61,6 +61,20 @@ Note: For your convenience this project also exposes a `watch` command.
 
 ## Running locally
 
+Before running any of the following commands make sure you create a `.env.json` in the root of the project. Use the following template to populate environment variables.
+
+Note: This file has been added to the `.gitignore`.
+
+```json
+{
+    "ServerlessFunction": {
+        "ASANA_ACCESS_TOKEN": "",
+        "GITHUB_TRIGGER_TOKEN": "",
+        "API_ACCESS_TOKEN": ""
+    }
+}
+```
+
 To run the lambda without debuging, run the following command.
 
 ```bash

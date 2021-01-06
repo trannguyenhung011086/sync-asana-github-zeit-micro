@@ -45,15 +45,31 @@ class SynchronizationEngine {
         }
 
         const taskIds = []
-
-        for (const commit of pullRequest.commits) {
-            const matchedCommit = matchIds(commit['commit']['message'])
-            taskIds.push(...matchedCommit)
+        console.log('1')
+        const contentToCheck = [pullRequest.title, pullRequest.body, pullRequest.head];
+        
+        for (const content in contentToCheck) {
+            const matchedValues = matchIds(content)
+            taskIds.push(...matchedValues)
         }
 
+        console.log('2')
+        console.log(JSON.stringify(pullRequest.commits, function( key, value) {
+            if( key == 'parent') { return value.id;}
+            else {return value;}
+          }))
+
+        for (const commit of pullRequest.commits) {
+            const matchedValues = matchIds(commit['commit']['message'])
+            taskIds.push(...matchedValues)
+        }
+
+        console.log('3')
+        console.log(JSON.stringify(pullRequest.comments))
+
         for (const comment of pullRequest.comments) {
-            const matchedComment = matchIds(comment['body'])
-            taskIds.push(...matchedComment)
+            const matchedValues = matchIds(comment['body'])
+            taskIds.push(...matchedValues)
         }
 
         return taskIds
@@ -67,7 +83,8 @@ class SynchronizationEngine {
         }
     
         for (const asanaTaskId of asanaTaskIds) {
-            const task = await this.asanaClient.getAsanaTask(asanaTaskId);
+            const task = await this.asanaClient.tasks.findById(asanaTaskId);
+            console.log('getting project confs')
             const projectConfigurations = this.getProjectConfigurations(task.projects)
     
             if (projectConfigurations.length === 0) {
@@ -75,6 +92,7 @@ class SynchronizationEngine {
             }
         
             for (const projectConfiguration of projectConfigurations) {
+                console.log('ittting')
                 const currentSection = this.getCurrentProjectSection(task.memberships, projectConfiguration.id)
         
                 // no need to process if were in a completed state.
@@ -84,7 +102,9 @@ class SynchronizationEngine {
     
                     // execute flow actions
                     const context = { pullRequest, task, projectId: projectConfiguration.id }
-                    actions.forEach(action => action.execute(context))
+                    const actionTasks = actions.map(action => action.execute(context))
+
+                    await Promise.all(actionTasks)
                 }
             }
         }
