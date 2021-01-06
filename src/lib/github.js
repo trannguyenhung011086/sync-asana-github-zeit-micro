@@ -55,7 +55,7 @@ exports.getPullRequestData = async (data) => {
     }
 
     for (const commit of commits) {
-        const item = ` ${commit['html_url']} - ${commit['commit']['message']} - ${commit['committer']['login']}`;
+        const item = ` ${commit['html_url']} - ${commit['commit']['message']}${commit?.committer?.login ? ` - ${commit.committer.login}` : ''}`;
         commit_urls.push(item);
     }
 
@@ -70,6 +70,7 @@ exports.getPullRequestData = async (data) => {
         head: data['pull_request']['head']['ref'],
         base: data['pull_request']['base']['ref'],
         merged: data['pull_request']['merged'],
+        draft: data['pull_request']['draft'],
         commits: commit_urls
     };
 }
@@ -110,8 +111,21 @@ exports.getAsanaIds = async (data) => {
 exports.getAsanaSectionId = (asanaSections, data) => {
     let section;
 
-    if (data.merged === false && data.state === 'open') {
+    if (
+        data.merged === false &&
+        data.state === 'open' &&
+        (data.draft || data.title.match(/wip/i))
+    ) {
         section = 'In Progress';
+    }
+
+    if (
+        data.merged === false &&
+        data.state === 'open' &&
+        !data?.draft &&
+        !data.title.match(/wip/i)
+    ) {
+        section = 'Ready for Review';
     }
 
     if (data.merged === true && data.state == 'closed') {
