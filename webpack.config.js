@@ -12,7 +12,7 @@ module.exports = {
   output: {
     filename: (chunkData) => awsSamPlugin.filename(chunkData),
     libraryTarget: "commonjs2",
-    path: path.resolve(".")
+    path: path.resolve("."),
   },
 
   // Create source maps

@@ -6,6 +6,7 @@
     "scripts": {
         "build": "webpack-cli",
         "watch": "webpack-cli -w",
+        "dev": "npx babel src --out-dir .aws-sam/build/ServerlessFunction --source-maps && yarn debug --event events/default.json",
         "start": "sam local invoke ServerlessFunction --env-vars .env.json",
         "debug": "yarn start -d 5858"
     },
@@ -28,7 +29,9 @@
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^4.2.1",
         "eslint-plugin-standard": "^4.0.1",
+        "handlebars": "^4.7.6",
         "node-fetch": "^2.6.0",
+        "prettier": "^2.2.1",
         "ts-loader": "^8.0.14",
         "typescript": "^4.1.3"
     },

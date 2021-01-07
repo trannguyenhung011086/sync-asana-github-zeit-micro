@@ -29,7 +29,7 @@ export const handler = async (event, context) =>{
         }
 
         console.log('Event:');
-        console.log(JSON.stringify(event));
+        console.log(JSON.stringify(event))
 
         if (!asanaAccessToken) {
             const log = 'No ASANA_ACCESS_TOKEN found!'

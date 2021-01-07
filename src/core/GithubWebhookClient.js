@@ -14,8 +14,8 @@ class GithubWebhookClient {
     buildPullRequestData = async (data) => {
         const parsedData = JSON.parse(data)
         const pullRequestData = parsedData.pull_request;
-        const commits = await this.webClient.get(pullRequestData.comments_url)
-        const comments = await this.webClient.get(pullRequestData.commits_url)
+        const commits = (await this.webClient.get(pullRequestData.commits_url)).data
+        const comments = (await this.webClient.get(pullRequestData.comments_url)).data
     
         return {
             title: pullRequestData.title,

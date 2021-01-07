@@ -25,14 +25,14 @@ class SynchronizationEngine {
     getCurrentProjectSection = (taskMemberships, projectId) => {
         const membership = taskMemberships
             .find(
-                membership => membership.project.gid === projectId,
+                membership => membership.project.gid == projectId,
             )
     
         return membership?.section
     }
 
     getProjectConfigurations = (projects) => {
-        return projects.filter((project) => this.configuration.projects.some(configuration => project.gid == configuration.id))
+        return this.configuration.projects.filter((configuration) => projects.some(project => project.gid == configuration.id))
     }
 
     getAsanaTaskIds = (pullRequest) => {
@@ -45,27 +45,17 @@ class SynchronizationEngine {
         }
 
         const taskIds = []
-        console.log('1')
         const contentToCheck = [pullRequest.title, pullRequest.body, pullRequest.head];
         
-        for (const content in contentToCheck) {
+        for (const content of contentToCheck) {
             const matchedValues = matchIds(content)
             taskIds.push(...matchedValues)
         }
-
-        console.log('2')
-        console.log(JSON.stringify(pullRequest.commits, function( key, value) {
-            if( key == 'parent') { return value.id;}
-            else {return value;}
-          }))
 
         for (const commit of pullRequest.commits) {
             const matchedValues = matchIds(commit['commit']['message'])
             taskIds.push(...matchedValues)
         }
-
-        console.log('3')
-        console.log(JSON.stringify(pullRequest.comments))
 
         for (const comment of pullRequest.comments) {
             const matchedValues = matchIds(comment['body'])
@@ -78,8 +68,8 @@ class SynchronizationEngine {
     processPullRequest = async (pullRequest) => {
         const asanaTaskIds = this.getAsanaTaskIds(pullRequest)
 
-        if (asanaTaskIds.lengh === 0) {
-            console.log(`Skiping processing of pull request: ${pullRequest.url}. No asana ids could be found.`)
+        if (asanaTaskIds.length === 0) {// 1/2 maybe return an http status and the message.
+            console.log(`Skipping processing of pull request: ${pullRequest.url}. No asana ids could be found.`)
         }
     
         for (const asanaTaskId of asanaTaskIds) {
@@ -87,17 +77,20 @@ class SynchronizationEngine {
             console.log('getting project confs')
             const projectConfigurations = this.getProjectConfigurations(task.projects)
     
-            if (projectConfigurations.length === 0) {
+            if (projectConfigurations.length === 0) {// 2/2 maybe return an http status and the message.
                 console.log(`No matching configurations were found for task: ${task.gid}. Skiping processing of task for pull request: ${pullRequest.url}`)
             }
         
             for (const projectConfiguration of projectConfigurations) {
-                console.log('ittting')
                 const currentSection = this.getCurrentProjectSection(task.memberships, projectConfiguration.id)
         
                 // no need to process if were in a completed state.
-                if (currentSection && !projectConfiguration.completedSections.includes(currentSection.gid)) {
+                const looseEquality = el => el == currentSection?.gid
+                if (!projectConfiguration.completedSections.some(looseEquality)) { // fix: strings dont match numbers
                     const flow = this.getMatchingFlow(projectConfiguration.flows, pullRequest)
+
+                    // report if no flow is found
+
                     const actions = this.actionFactory.buildActions(flow.actions)
     
                     // execute flow actions

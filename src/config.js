@@ -1,9 +1,9 @@
 const configuration = {
     projects: [
         {
-            id: 1179370212192146,
+            id: '1179370212192146',
             name: "WEB [Developing] Workflow", // just metadata
-            completedSections: [1179370602973176, 1180011511871946],
+            completedSections: ['1179370602973176', '1180011511871946'],
             flows:[
                 {
                     match: { 
@@ -13,17 +13,17 @@ const configuration = {
                             state: 'open'
                         }
                     },
-                    types:[
+                    actions:[
                         {
                             type: "setCustomField",
                             value: {
-                                id: 1164289210145661,
-                                value: 1164289210145663
+                                id: '1164289210145661',
+                                value: '1164289210145663'
                             }
                         },
                         {
                             type: "setSection",
-                            value: 1179370602973168
+                            value: '1179370602973168'
                         },
                         {
                             type: "comment",
@@ -42,17 +42,17 @@ const configuration = {
                             state: 'open'
                         }
                     },
-                    types:[
+                    actions:[
                         {
                             type: "setCustomField",
                             value: {
-                                id: 1164289210145661,
-                                value: 1164315670581599
+                                id: '1164289210145661',
+                                value: '1164315670581599'
                             }
                         },
                         {
                             type: "setSection",
-                            value: 1180261910562366
+                            value: '1180261910562366'
                         },
                         {
                             type: "comment",
@@ -72,17 +72,17 @@ const configuration = {
                             base: 'develop'
                         }
                     },
-                    types:[
+                    actions:[
                         {
                             type: "setCustomField",
                             value: {
-                                id: 1164289210145661,
-                                value: 1182837669988980
+                                id: '1164289210145661',
+                                value: '1182837669988980'
                             }
                         },
                         {
                             type: "setSection",
-                            value: 1182832111078239
+                            value: '1182832111078239'
                         },
                         {
                             type: "comment",
@@ -106,17 +106,17 @@ const configuration = {
                             base: 'master'
                         }
                     },
-                    types:[
+                    actions:[
                         {
                             type: "setCustomField",
                             value: {
-                                id: 1164289210145661,
-                                value: 1164289210145667
+                                id: '1164289210145661',
+                                value: '1164289210145667'
                             }
                         },
                         {
                             type: "setSection",
-                            value: 1180261910562368
+                            value: '1180261910562368'
                         },
                         {
                             type: "comment",
