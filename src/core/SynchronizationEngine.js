@@ -68,7 +68,7 @@ class SynchronizationEngine {
     processPullRequest = async (pullRequest) => {
         const asanaTaskIds = this.getAsanaTaskIds(pullRequest)
 
-        if (asanaTaskIds.length === 0) {// 1/2 maybe return an http status and the message.
+        if (asanaTaskIds.length === 0) { // 1/2 maybe return an http status reason is better. let the handler return the status code.) and the message.
             console.log(`Skipping processing of pull request: ${pullRequest.url}. No asana ids could be found.`)
         }
     
@@ -77,7 +77,7 @@ class SynchronizationEngine {
             console.log('getting project confs')
             const projectConfigurations = this.getProjectConfigurations(task.projects)
     
-            if (projectConfigurations.length === 0) {// 2/2 maybe return an http status and the message.
+            if (projectConfigurations.length === 0) { // 2/2 maybe return an http status (reason is better. let the handler return the status code.) and the message.
                 console.log(`No matching configurations were found for task: ${task.gid}. Skiping processing of task for pull request: ${pullRequest.url}`)
             }
         
@@ -86,10 +86,10 @@ class SynchronizationEngine {
         
                 // no need to process if were in a completed state.
                 const looseEquality = el => el == currentSection?.gid
-                if (!projectConfiguration.completedSections.some(looseEquality)) { // fix: strings dont match numbers
+                if (!projectConfiguration.completedSections.some(looseEquality)) {
                     const flow = this.getMatchingFlow(projectConfiguration.flows, pullRequest)
 
-                    // report if no flow is found
+                    // TODO: report if no flow is found
 
                     const actions = this.actionFactory.buildActions(flow.actions)
     
