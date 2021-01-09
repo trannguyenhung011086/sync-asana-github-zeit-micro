@@ -1,4 +1,4 @@
-export const matchOnKeys = (mapA, mapB) => {
+export const matchOnKeys = (mapA: Object, mapB: Object): boolean => {
 	let valuesMatch = true
 
 	for (const key in mapA) {
