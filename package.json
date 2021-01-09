@@ -4,9 +4,8 @@
     "description": "",
     "main": "src/index.js",
     "scripts": {
-        "build": "webpack-cli",
-        "watch": "webpack-cli -w",
-        "dev": "npx babel src --out-dir .aws-sam/build/ServerlessFunction --source-maps && yarn debug --event events/default.json",
+        "build": "yarn tsc -p .tsconfig.json",
+        "watch": "yarn build -w",
         "start": "sam local invoke ServerlessFunction --env-vars .env.json",
         "debug": "yarn start -d 5858"
     },
@@ -20,7 +19,7 @@
     "license": "ISC",
     "dependencies": {
         "@babel/runtime": "^7.11.2",
-        "asana": "^0.18.4",
+        "asana": "^0.18.5",
         "axios": "^0.21.1",
         "cors": "^2.8.5",
         "eslint": "^7.17.0",

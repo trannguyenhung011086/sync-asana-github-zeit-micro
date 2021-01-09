@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "target": "es2015",
+      "module": "commonjs",
+      "allowJs": true,
+      "checkJs": true,
+      "sourceMap": true,
+      "esModuleInterop": true,
+      "outDir": ".aws-sam/build/ServerlessFunction"
+    },
+    "include": ["src/**/*.ts", "src/**/*.js"]
+  }

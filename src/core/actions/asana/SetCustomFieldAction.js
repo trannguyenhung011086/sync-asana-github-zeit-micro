@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,48 +49,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var axios_1 = require("axios");
-var GithubWebhookClient = /** @class */ (function () {
-    function GithubWebhookClient(accessToken) {
-        this.webClient = axios_1["default"].create({
-            headers: {
-                accept: 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json',
-                Authorization: "token " + accessToken
-            }
-        });
+var AsanaAction_1 = require("./AsanaAction");
+var SetCustomFieldAction = /** @class */ (function (_super) {
+    __extends(SetCustomFieldAction, _super);
+    function SetCustomFieldAction() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    GithubWebhookClient.prototype.buildPullRequestData = function (data) {
+    SetCustomFieldAction.prototype.execute = function (context) {
         return __awaiter(this, void 0, void 0, function () {
-            var parsedData, pullRequestData, commits, comments;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        parsedData = JSON.parse(data);
-                        pullRequestData = parsedData.pull_request;
-                        return [4 /*yield*/, this.webClient.get(pullRequestData.commits_url)];
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.client.tasks.updateTask(context.task.gid, {
+                            custom_fields: (_a = {},
+                                _a[this.value.id] = this.value.value,
+                                _a)
+                        })];
                     case 1:
-                        commits = (_a.sent()).data;
-                        return [4 /*yield*/, this.webClient.get(pullRequestData.comments_url)];
-                    case 2:
-                        comments = (_a.sent()).data;
-                        return [2 /*return*/, {
-                                title: pullRequestData.title,
-                                body: pullRequestData.body,
-                                url: pullRequestData.html_url,
-                                state: pullRequestData.state,
-                                user: pullRequestData.user,
-                                head: pullRequestData.head.ref,
-                                base: pullRequestData.base.ref,
-                                merged: pullRequestData.merged,
-                                draft: pullRequestData.draft,
-                                commits: commits,
-                                comments: comments
-                            }];
+                        _b.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return GithubWebhookClient;
-}());
-exports["default"] = GithubWebhookClient;
+    return SetCustomFieldAction;
+}(AsanaAction_1["default"]));
+exports["default"] = SetCustomFieldAction;

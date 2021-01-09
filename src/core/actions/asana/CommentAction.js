@@ -1,4 +1,17 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,48 +49,32 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var axios_1 = require("axios");
-var GithubWebhookClient = /** @class */ (function () {
-    function GithubWebhookClient(accessToken) {
-        this.webClient = axios_1["default"].create({
-            headers: {
-                accept: 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json',
-                Authorization: "token " + accessToken
-            }
-        });
+var handlebars_1 = require("handlebars");
+var AsanaAction_1 = require("./AsanaAction");
+var CommentAction = /** @class */ (function (_super) {
+    __extends(CommentAction, _super);
+    function CommentAction() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    GithubWebhookClient.prototype.buildPullRequestData = function (data) {
+    CommentAction.prototype.execute = function (context) {
         return __awaiter(this, void 0, void 0, function () {
-            var parsedData, pullRequestData, commits, comments;
+            var template, renderedComment, comment;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        parsedData = JSON.parse(data);
-                        pullRequestData = parsedData.pull_request;
-                        return [4 /*yield*/, this.webClient.get(pullRequestData.commits_url)];
+                        template = handlebars_1["default"].compile(this.value);
+                        renderedComment = template(context);
+                        comment = {
+                            text: renderedComment
+                        };
+                        return [4 /*yield*/, this.client.tasks.addComment(context.task.gid, comment)];
                     case 1:
-                        commits = (_a.sent()).data;
-                        return [4 /*yield*/, this.webClient.get(pullRequestData.comments_url)];
-                    case 2:
-                        comments = (_a.sent()).data;
-                        return [2 /*return*/, {
-                                title: pullRequestData.title,
-                                body: pullRequestData.body,
-                                url: pullRequestData.html_url,
-                                state: pullRequestData.state,
-                                user: pullRequestData.user,
-                                head: pullRequestData.head.ref,
-                                base: pullRequestData.base.ref,
-                                merged: pullRequestData.merged,
-                                draft: pullRequestData.draft,
-                                commits: commits,
-                                comments: comments
-                            }];
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
     };
-    return GithubWebhookClient;
-}());
-exports["default"] = GithubWebhookClient;
+    return CommentAction;
+}(AsanaAction_1["default"]));
+exports["default"] = CommentAction;
