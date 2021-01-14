@@ -1,17 +1,23 @@
-// const {
-//     getAsanaTask,
-//     addComment,
-//     addAsanaTask,
-//     getAsanaProject,
-//     getAsanaSections
-// } = require("./lib/asana.js");
-//
-// const asanaId = "1140905340811780";
+const {
+    getAsanaTask,
+    addComment,
+    addAsanaTask,
+    getAsanaProject,
+    getAsanaSections,
+} = require('./lib/asana.js');
+
+const asanaId = '1148058015912289';
 
 async function test(toMatch) {
-    // // get asana task info
-    // const task = await getAsanaTask(asanaId);
-    // console.log(`Found asana task: ${task.name}`);
+    // get asana task info
+    const task = await getAsanaTask(asanaId);
+    console.log(`Found asana task: ${JSON.stringify(task.memberships)}`);
+
+    console.log(
+        task.memberships
+            .filter(membership => membership.project.name === 'Sprint 17')
+            .map(item => item.section.name)[0],
+    );
     //
     // const project = getAsanaProject(task);
     // console.log(`Found asana project: ${project.name}`);
@@ -23,13 +29,11 @@ async function test(toMatch) {
     // add comment to asana task
     // await addComment(asanaId, githubData);
     // console.log(`Added comment to asana task: ${task.name}`);
-    const exp = /#([0-9]{16})/;
-    // const match = exp.match(toMatch);
-    let match = toMatch.match(/#([0-9]{16})/g);
-    if (match) match = match.map(item => item.replace("#", ""));
-    console.log(match);
+    // const exp = /#([0-9]{16})/;
+    // // const match = exp.match(toMatch);
+    // let match = toMatch.match(/#([0-9]{16})/g);
+    // if (match) match = match.map(item => item.replace('#', ''));
+    // console.log(match);
 }
 
-test(
-    "No margin between project header and content below it \nref #1146764913863934\nref #114659598107265",
-);
+test();
