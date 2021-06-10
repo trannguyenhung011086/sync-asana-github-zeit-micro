@@ -65,3 +65,4 @@ typings/
 
 dist/
 .aws-sam/
+.env.json

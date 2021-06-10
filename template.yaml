@@ -1,78 +1,78 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: "asana-github-sync"
+Description: 'asana-github-sync'
 Globals:
-  Function:
-    Timeout: 60
+    Function:
+        Timeout: 60
 Resources:
-  ServerlessFunctionRole:
-    Type: "AWS::IAM::Role"
-    Properties:
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service: "lambda.amazonaws.com"
-            Action: "sts:AssumeRole"
-      Path: "/service-role/"
-      MaxSessionDuration: 3600
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-  ServerlessFunction:
-    Type: 'AWS::Serverless::Function'
-    Properties:
-      Handler: src/index.handler
-      Runtime: nodejs12.x
-      CodeUri: .
-      Description: Asana Github Syncer!
-      MemorySize: 512
-      Timeout: 60
-      Role: !GetAtt ServerlessFunctionRole.Arn
-      Events:
-        HttpApiEvent:
-          Type: HttpApi
-          Properties:
-            ApiId: !Ref HttpApi
-            Path: /asana-github-sync
-            Method: ANY
-            TimeoutInMillis: 29000
-      Environment:
-        Variables:
-          API_ACCESS_TOKEN: >-
-            {{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncApiAccessToken}}
-          ASANA_ACCESS_TOKEN: >-
-            {{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncAsanaAccessToken}}
-          GITHUB_TRIGGER_TOKEN: >-
-            {{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncGithubTriggerToken}}
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: ad74e09c-bf63-453f-9fa9-7c3a9c3ead15
-      BuildMethod: makefile
-  HttpApi:
-    Type: AWS::Serverless::HttpApi
-    Properties:
-      StageName: Prod
-      CorsConfiguration: True
+    ServerlessFunctionRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service: 'lambda.amazonaws.com'
+                      Action: 'sts:AssumeRole'
+            Path: '/service-role/'
+            MaxSessionDuration: 3600
+            ManagedPolicyArns:
+                - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    ServerlessFunction:
+        Type: 'AWS::Serverless::Function'
+        Properties:
+            CodeUri: src
+            Handler: index.handler
+            Runtime: nodejs12.x
+            Description: Asana Github Syncer!
+            MemorySize: 512
+            Timeout: 60
+            Role: !GetAtt ServerlessFunctionRole.Arn
+            Events:
+                HttpApiEvent:
+                    Type: HttpApi
+                    Properties:
+                        ApiId: !Ref HttpApi
+                        Path: /asana-github-sync
+                        Method: ANY
+                        TimeoutInMillis: 29000
+            Environment:
+                Variables:
+                    API_ACCESS_TOKEN: >-
+                        {{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncApiAccessToken}}
+                    ASANA_ACCESS_TOKEN: >-
+                        {{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncAsanaAccessToken}}
+                    GITHUB_TRIGGER_TOKEN: >-
+                        {{resolve:secretsmanager:asana-github-sync-secret:SecretString:AsanaGithubSyncGithubTriggerToken}}
+        Metadata:
+            'AWS::CloudFormation::Designer':
+                id: ad74e09c-bf63-453f-9fa9-7c3a9c3ead15
+            BuildMethod: makefile
+    HttpApi:
+        Type: AWS::Serverless::HttpApi
+        Properties:
+            StageName: Prod
+            CorsConfiguration: True
 Outputs:
-  ServerlessApi:
-    Description: API Gateway endpoint URL for Prod stage for function
-    Value: !Sub >-
-      https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/asana-github-sync
-  ServerlessFunction:
-    Description: Lambda Function ARN
-    Value: !GetAtt ServerlessFunction.Arn
-  ServerlessFunctionRole:
-    Description: Implicit IAM Role created for function
-    Value: !GetAtt ServerlessFunctionRole.Arn
+    ServerlessApi:
+        Description: API Gateway endpoint URL for Prod stage for function
+        Value: !Sub >-
+            https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/asana-github-sync
+    ServerlessFunction:
+        Description: Lambda Function ARN
+        Value: !GetAtt ServerlessFunction.Arn
+    ServerlessFunctionRole:
+        Description: Implicit IAM Role created for function
+        Value: !GetAtt ServerlessFunctionRole.Arn
 Metadata:
-  'AWS::CloudFormation::Designer':
-    ad74e09c-bf63-453f-9fa9-7c3a9c3ead15:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 60
-        'y': 90
-      z: 1
-      embeds: []
+    'AWS::CloudFormation::Designer':
+        ad74e09c-bf63-453f-9fa9-7c3a9c3ead15:
+            size:
+                width: 60
+                height: 60
+            position:
+                x: 60
+                'y': 90
+            z: 1
+            embeds: []
 Transform: AWS::Serverless-2016-10-31

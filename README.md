@@ -18,8 +18,8 @@
 
 ## Get Github personal token
 
-- under profile pic -> settings -> developer settings -> personal access tokens (Done)
-- Check "repo" and everthing under it for permissions (Done)
+-   under profile pic -> settings -> developer settings -> personal access tokens (Done)
+-   Check "repo" and everthing under it for permissions (Done)
 
 ## Setup Github webhook
 
@@ -30,7 +30,7 @@
 
 ## Deploy
 
-The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code.
+The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
 
 ## Deploy the application
 
@@ -38,20 +38,54 @@ The Serverless Application Model Command Line Interface (SAM CLI) is an extensio
 
 To use the SAM CLI, you need the following tools.
 
-* SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+-   SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+-   Node.js - [Install Node.js 10](https://nodejs.org/en/), including the NPM package management tool.
+-   Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
 To build and deploy the application, run the following in your shell:
 
 ```bash
-sam build
+yarn build
 sam deploy
 ```
 
 If you redeploy this, you -might- need to go in to Github and change the endpoint URL in the Webhook.
-However, Cloudformation tries to keep the endpoint url the same if it can. 
+However, Cloudformation tries to keep the endpoint url the same if it can.
 https://github.com/KrazyCouponLady/web/settings/hooks/239601246
 
-This application has a custom build pipeline because it it babel-ed down to CJS (so it can use condition property access). The build pipeline is in 'makefile' and the template contains a line that tells SAM to use that file when building. 
+## Building
+
+This project uses Babel and Webpack to enable development with ES6 and modern Javascript. To build the project use the `yarn build` command. All build artifacts will be output to the `.aws-sam/build` directory after a succesful compilation.
+
+Note: For your convenience this project also exposes a `watch` command.
+
+## Running locally
+
+Before running any of the following commands make sure you create a `.env.json` in the root of the project. Use the following template to populate environment variables.
+
+Note: This file has been added to the `.gitignore`.
+
+```json
+{
+    "ServerlessFunction": {
+        "ASANA_ACCESS_TOKEN": "",
+        "GITHUB_TRIGGER_TOKEN": "",
+        "API_ACCESS_TOKEN": ""
+    }
+}
+```
+
+To run the lambda without debuging, run the following command.
+
+```bash
+yarn start --event events/default.json
+```
+
+To run the lambda with debuging, run the following command. This will run the lambda with insepector enabled.
+
+```bash
+yarn debug --event events/default.json
+```
 
 ## Create pull request on github
 
